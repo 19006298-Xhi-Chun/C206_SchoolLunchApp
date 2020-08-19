@@ -11,14 +11,9 @@ public class Menu {
 	private String displayName;
 	private int month;
 	private int numberOfItems;
-	private ArrayList<MenuItem> items;
+	private ArrayList<MenuItem> items = new ArrayList<MenuItem>();
 
-	/**
-	 * @param displayName
-	 * @param month
-	 * @param numberOfItems
-	 * @param items
-	 */
+	
 	public Menu(String displayName, int month, int numberOfItems, ArrayList<MenuItem> items) {
 		this.displayName = displayName;
 		this.month = month;
@@ -57,6 +52,9 @@ public class Menu {
 		this.items = items;
 	}
 	public String toString() {
+		return null;
+		//String output = String.format("%-20s %-10d %-15d %-15s %-10s %-10b -10.2f\n", displayName,month,numberOfItems,getCategory(),getName(),isHealthyChoice(),getPrice());
+		//return output;
 		
 	}
 
