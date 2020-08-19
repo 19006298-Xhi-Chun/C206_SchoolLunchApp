@@ -70,7 +70,15 @@ public class C206_CaseStudy {
 		String displayName = Helper.readString("Enter the display name of menu > ");
 		int month = Helper.readInt("Enter the month of menu > ");
 		int numOfItems = Helper.readInt("Enter the number of item > ");
-		// monthlyMenu.addAll(displayName, month, numOfItems);
+		for (int i = 0; i < monthlyMenu.size(); i++) {
+			if(monthlyMenu.get(i).getDisplayName().equalsIgnoreCase(displayName)) {
+				System.out.println("Cannot have duplicate name of menu!");
+			}else {
+				// monthlyMenu.addAll(displayName, month, numOfItems);
+				System.out.println("Menu has successfully created.");
+			}
+		}
+		
 	}
 
 	public static void viewAllMenu(ArrayList<Menu> monthlyMenu) {
@@ -86,6 +94,7 @@ public class C206_CaseStudy {
 		for (int i = 0; i < monthlyMenu.size(); i++) {
 			if(monthlyMenu.get(i).getDisplayName().equalsIgnoreCase(delete)) {
 				monthlyMenu.remove(i);
+				System.out.println("Menu has successfully deleted.");
 			}
 		}
 	}
