@@ -1,11 +1,13 @@
 import java.util.ArrayList;
 
-public class C206_CaseStudy {
+public class C206_CaseStudy
+{
 	ArrayList<Menu> monthlyMenu = new ArrayList<Menu>();
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+	public static void main(String[] args)
+	{
 		ArrayList<Menu> monthlyMenu = new ArrayList<Menu>();
+		ArrayList<MenuItem> menuItem = new ArrayList<MenuItem>();
 		int option = 0;
 		while (option != 6)
 		{
@@ -16,10 +18,22 @@ public class C206_CaseStudy {
 			else if (option == 2)
 			{
 				menu();
-				int num = Helper.readInt("Which action you want perform > ");
+				int num = Helper.readInt("Which action do you want perform? > ");
 				if (num == 1)
 				{
-					
+					addMenuItem(menuItem);
+				}
+				else if (num == 2)
+				{
+					viewAllMenuItem(menuItem);
+				}
+				else if (num == 3)
+				{
+					deleteMenuItem(menuItem);
+				}
+				else
+				{
+					System.out.println("Invalid option.");
 				}
 			}
 			else if (option == 3)
@@ -33,7 +47,7 @@ public class C206_CaseStudy {
 			else if (option == 5)
 			{
 				menu();
-				int num = Helper.readInt("Which action you want perform > ");
+				int num = Helper.readInt("Which action do you want perform? > ");
 				if (num == 1) {
 					createMenu(monthlyMenu);
 				} else if (num == 2) {
@@ -48,7 +62,6 @@ public class C206_CaseStudy {
 			} else {
 				System.out.println("Invalid option.");
 			}
-
 		}
 	}
 
@@ -81,6 +94,143 @@ public class C206_CaseStudy {
 
 	}
 
+	public static void addMenuItem(ArrayList<MenuItem> menuItem)
+	{
+		//Done by Wen Ning
+		
+		String name = Helper.readString("Enter name of item to add > ").trim();
+		
+		if(name.length() > 30)
+		{
+			System.out.println("Name is too long!");
+			return;
+		}
+		
+		for(int i = 0; i < menuItem.size(); i++)
+		{
+			if(menuItem.get(i).getName().equalsIgnoreCase(name))
+			{
+				System.out.println("Duplicate item!");
+				return;
+			}
+		}
+		
+		String category = Helper.readString("Enter category of item > ").trim();
+		double price = Helper.readDouble("Enter price of item > $");
+		String choice =  Helper.readString("Is this menu item healthy? (Y/N) > ").trim();
+		boolean healthyChoice = false;
+		
+		if(choice.equalsIgnoreCase("Y"))
+		{
+			healthyChoice = true;
+		}
+		else if(choice.equalsIgnoreCase("N"))
+		{
+			healthyChoice = false;
+		}
+		else
+		{
+			System.out.println("Invalid choice!");
+			return;
+		}
+		
+		String confirm = Helper.readString("Are you sure? (Y/N)").trim();
+		if(confirm.equalsIgnoreCase("Y"))
+		{
+			menuItem.add(new MenuItem(category, name, healthyChoice, price));
+			System.out.println("Item added!");
+		}
+		else if(confirm.equalsIgnoreCase("N"))
+		{
+			System.out.println("Item not added!");
+		}
+		else
+		{
+			System.out.println("Invalid choice!");
+		}
+	}
+	
+	public static void deleteMenuItem(ArrayList<MenuItem> menuItem)
+	{
+		//Done by Wen Ning
+		
+		String name = Helper.readString("Enter name of item to delete > ").trim();
+		while(name == null)
+		{
+			name = Helper.readString("Please enter an item name! > ").trim();
+		}
+		
+		for(int i = 0; i < menuItem.size(); i++)
+		{
+			if(menuItem.get(i).getName().equalsIgnoreCase(name))
+			{
+				menuItem.remove(i);
+				System.out.println("Item removed!");
+				return;
+			}
+		}
+		System.out.println("Item not found!");
+	}
+	
+	public static void viewAllMenuItem(ArrayList<MenuItem> menuItem)
+	{
+		//Done by Wen Ning
+		
+		System.out.println("1. View all items");
+		System.out.println("2. View individual item");
+		int num = Helper.readInt("Enter choice > ");
+		
+		if(num == 1)
+		{
+			if(menuItem.size() > 0)
+			{
+				System.out.println(String.format("%-30s %-20s %-10s %s", "Name", "Category", "Price", "HealthyChoice"));
+				Helper.line(100, "=");
+				for(int i = 0; i < menuItem.size(); i++)
+				{
+					String name = menuItem.get(i).getName();
+					String category = menuItem.get(i).getCategory();
+					String price = String.valueOf(menuItem.get(i).getPrice());
+					String healthyChoice = menuItem.get(i).isHealthyChoice()? "true" : "false";
+					System.out.println(String.format("%-30s %-20s %-10s %s", name, category, price, healthyChoice));
+				}
+			}
+			else
+			{
+				System.out.println("There are no menu items!");
+			}
+		}
+		else if(num == 2)
+		{
+			String name = Helper.readString("Enter name of item to view > ").trim();
+			while(name == null)
+			{
+				name = Helper.readString("Please enter an item name! > ").trim();
+			}
+			
+			for(int i = 0; i < menuItem.size(); i++)
+			{
+				if(menuItem.get(i).getName().equalsIgnoreCase(name))
+				{
+					System.out.println(String.format("%-30s %-20s %-10s %s", "Name", "Category", "Price", "HealthyChoice"));
+					Helper.line(100, "=");
+					
+					name = menuItem.get(i).getName();
+					String category = menuItem.get(i).getCategory();
+					String price = String.valueOf(menuItem.get(i).getPrice());
+					String healthyChoice = menuItem.get(i).isHealthyChoice()? "true" : "false";
+					System.out.println(String.format("%-30s %-20s %-10s %s", name, category, price, healthyChoice));
+					return;
+				}
+			}
+			System.out.println("Item not found!");
+		}
+		else
+		{
+			System.out.println("Invalid choice!");
+		}
+	}
+	
 	public static void createMenu(ArrayList<Menu> monthlyMenu) {
 		String displayName = Helper.readString("Enter the display name of menu > ");
 		int month = Helper.readInt("Enter the month of menu > ");
@@ -93,7 +243,6 @@ public class C206_CaseStudy {
 				System.out.println("Menu has successfully created.");
 			}
 		}
-		
 	}
 
 	public static void viewAllMenu(ArrayList<Menu> monthlyMenu) {
@@ -113,5 +262,4 @@ public class C206_CaseStudy {
 			}
 		}
 	}
-
 }
