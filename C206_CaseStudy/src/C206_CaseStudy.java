@@ -8,9 +8,13 @@ public class C206_CaseStudy
 	{
 		ArrayList<Menu> monthlyMenu = new ArrayList<Menu>();
 		ArrayList<MenuItem> menuItem = new ArrayList<MenuItem>();
+		ArrayList<Bill> billList = new ArrayList<Bill>();
 		int option = 0;
+		
 		while (option != 6)
 		{
+			optionMenu();
+			option = Helper.readInt("enter option");
 			if (option == 1)
 			{
 
@@ -42,6 +46,21 @@ public class C206_CaseStudy
 			}
 			else if (option == 4)
 			{
+				menu();
+				int num = Helper.readInt("Which action do you want perform? > ");
+				
+				if(num ==1) {
+					createBill(billList);
+				}
+				else if (num ==2) {
+					viewBill(billList);
+				}
+				else if (num ==3) {
+					deleteBill(billList);
+				}
+				else {
+					System.out.println("Invalid option.");
+				}
 
 			} 
 			else if (option == 5)
@@ -62,6 +81,8 @@ public class C206_CaseStudy
 			} else {
 				System.out.println("Invalid option.");
 			}
+			
+			
 		}
 	}
 
@@ -262,4 +283,40 @@ public class C206_CaseStudy
 			}
 		}
 	}
+	
+	//Bill Methods Starts here
+	
+	public static void createBill(ArrayList <Bill> billList) {
+		String payee = Helper.readString("Enter the name of payee > ");
+		Double totalAmount = Helper.readDouble("Enter the total amount > ");
+		String dueDate = Helper.readString("Enter the due date > ");
+		
+		Bill bill = new Bill(payee,totalAmount,dueDate);
+		billList.add(bill);
+	}
+	
+	public static void deleteBill(ArrayList <Bill> billList) {
+		System.out.println("=====Displaying bill items, select the S/N to delete=====");
+		viewBill(billList);
+		int num = Helper.readInt("Which S/N of the item you wish to delete? > ");
+		
+		billList.remove(num-1);
+	}
+	public static void viewBill(ArrayList <Bill> billList) {
+		int serialNumber = 1;
+		System.out.println(String.format("%-5s %-20s %-20s %-20s", "S/N", "Payee", "TotalAmount", "DueDate"));
+		for (Bill x :billList) {
+		
+			String output = String.format("%-5s", Integer.toString(serialNumber) );
+			 output = output + x.toString();
+			System.out.println(output);
+			serialNumber++;
+		}
+	}
+	
+	
+	
+	
+	
+	
 }
