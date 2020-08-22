@@ -285,6 +285,7 @@ public class C206_CaseStudy
 	}
 	
 	//Bill Methods Starts here
+	//Done by verzon
 	
 	public static void createBill(ArrayList <Bill> billList) {
 		String payee = Helper.readString("Enter the name of payee > ");
