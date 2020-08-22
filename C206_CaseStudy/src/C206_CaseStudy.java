@@ -7,16 +7,31 @@ public class C206_CaseStudy {
 		// TODO Auto-generated method stub
 		ArrayList<Menu> monthlyMenu = new ArrayList<Menu>();
 		int option = 0;
-		while (option != 6) {
-			if (option == 1) {
+		while (option != 6)
+		{
+			if (option == 1)
+			{
 
-			} else if (option == 2) {
+			}
+			else if (option == 2)
+			{
+				menu();
+				int num = Helper.readInt("Which action you want perform > ");
+				if (num == 1)
+				{
+					
+				}
+			}
+			else if (option == 3)
+			{
 
-			} else if (option == 3) {
+			}
+			else if (option == 4)
+			{
 
-			} else if (option == 4) {
-
-			} else if (option == 5) {
+			} 
+			else if (option == 5)
+			{
 				menu();
 				int num = Helper.readInt("Which action you want perform > ");
 				if (num == 1) {
