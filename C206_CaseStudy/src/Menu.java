@@ -20,6 +20,7 @@ public class Menu {
 		this.numberOfItems = numberOfItems;
 		this.items = items;
 	}
+	
 	public String getDisplayName() {
 		return displayName;
 	}
@@ -52,9 +53,8 @@ public class Menu {
 		this.items = items;
 	}
 	public String toString() {
-		return null;
-		//String output = String.format("%-20s %-10d %-15d %-15s %-10s %-10b -10.2f\n", displayName,month,numberOfItems,getCategory(),getName(),isHealthyChoice(),getPrice());
-		//return output;
+		String output = String.format("%-20s %-10d %-15d\n", displayName,month,numberOfItems);
+		return output;
 		
 	}
 

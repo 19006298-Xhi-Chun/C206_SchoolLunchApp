@@ -2,7 +2,6 @@ import java.util.ArrayList;
 
 public class C206_CaseStudy
 {
-	ArrayList<Menu> monthlyMenu = new ArrayList<Menu>();
 
 	public static void main(String[] args)
 	{
@@ -252,15 +251,18 @@ public class C206_CaseStudy
 		}
 	}
 	
+	// monthly menu
 	public static void createMenu(ArrayList<Menu> monthlyMenu) {
+		
 		String displayName = Helper.readString("Enter the display name of menu > ");
 		int month = Helper.readInt("Enter the month of menu > ");
-		int numOfItems = Helper.readInt("Enter the number of item > ");
+		int numOfItems = Helper.readInt("Enter the number of items > ");
+		
 		for (int i = 0; i < monthlyMenu.size(); i++) {
 			if(monthlyMenu.get(i).getDisplayName().equalsIgnoreCase(displayName)) {
 				System.out.println("Cannot have duplicate name of menu!");
 			}else {
-				// monthlyMenu.addAll(displayName, month, numOfItems);
+				monthlyMenu.add(new Menu(displayName, month, numOfItems,monthlyMenu.get(i).getItems()));
 				System.out.println("Menu has successfully created.");
 			}
 		}
@@ -269,7 +271,8 @@ public class C206_CaseStudy
 	public static void viewAllMenu(ArrayList<Menu> monthlyMenu) {
 		String output = String.format("%-20s %-10s %-15s %-15s %-10s %-10s -10s\n", "Menu Name","Month","No. of Items","Category","Name","Healthy","Price");
 		for (int i = 0; i < monthlyMenu.size(); i++) {
-			output += String.format("%-96s\n", monthlyMenu.get(i).toString());
+			
+			output += String.format("%-47s %-15s %-10s %-10s -10s\n", monthlyMenu.get(i).toString(),monthlyMenu.get(i).getItems());
 		}
 		System.out.println(output);
 	}
@@ -280,6 +283,8 @@ public class C206_CaseStudy
 			if(monthlyMenu.get(i).getDisplayName().equalsIgnoreCase(delete)) {
 				monthlyMenu.remove(i);
 				System.out.println("Menu has successfully deleted.");
+			}else {
+				System.out.println("No existing menu.");
 			}
 		}
 	}
