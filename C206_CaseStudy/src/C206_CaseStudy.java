@@ -2,18 +2,17 @@ import java.util.ArrayList;
 
 public class C206_CaseStudy
 {
+	ArrayList<Menu> monthlyMenu = new ArrayList<Menu>();
 
 	public static void main(String[] args)
 	{
 		ArrayList<Menu> monthlyMenu = new ArrayList<Menu>();
-		ArrayList<MenuItem> menuItem = new ArrayList<MenuItem>();
-		ArrayList<Bill> billList = new ArrayList<Bill>();
+		ArrayList<MenuItem> menuItemList = new ArrayList<MenuItem>();
 		int option = 0;
-		
 		while (option != 6)
 		{
 			optionMenu();
-			option = Helper.readInt("enter option");
+			option = Helper.readInt("Which action do you want perform? > ");
 			if (option == 1)
 			{
 
@@ -24,15 +23,15 @@ public class C206_CaseStudy
 				int num = Helper.readInt("Which action do you want perform? > ");
 				if (num == 1)
 				{
-					addMenuItem(menuItem);
+					inputAddMenuItem(menuItemList);
 				}
 				else if (num == 2)
 				{
-					viewAllMenuItem(menuItem);
+					viewAllMenuItem(menuItemList);
 				}
 				else if (num == 3)
 				{
-					deleteMenuItem(menuItem);
+					inputDeleteMenuItem(menuItemList);
 				}
 				else
 				{
@@ -45,21 +44,6 @@ public class C206_CaseStudy
 			}
 			else if (option == 4)
 			{
-				menu();
-				int num = Helper.readInt("Which action do you want perform? > ");
-				
-				if(num ==1) {
-					createBill(billList);
-				}
-				else if (num ==2) {
-					viewBill(billList);
-				}
-				else if (num ==3) {
-					deleteBill(billList);
-				}
-				else {
-					System.out.println("Invalid option.");
-				}
 
 			} 
 			else if (option == 5)
@@ -80,8 +64,6 @@ public class C206_CaseStudy
 			} else {
 				System.out.println("Invalid option.");
 			}
-			
-			
 		}
 	}
 
@@ -113,28 +95,14 @@ public class C206_CaseStudy
 		System.out.println("3. Delete");
 
 	}
-
-	public static void addMenuItem(ArrayList<MenuItem> menuItem)
+	
+	public static void inputAddMenuItem(ArrayList<MenuItem> menuItemList)
 	{
 		//Done by Wen Ning
 		
+		boolean isAdded = false;
+		
 		String name = Helper.readString("Enter name of item to add > ").trim();
-		
-		if(name.length() > 30)
-		{
-			System.out.println("Name is too long!");
-			return;
-		}
-		
-		for(int i = 0; i < menuItem.size(); i++)
-		{
-			if(menuItem.get(i).getName().equalsIgnoreCase(name))
-			{
-				System.out.println("Duplicate item!");
-				return;
-			}
-		}
-		
 		String category = Helper.readString("Enter category of item > ").trim();
 		double price = Helper.readDouble("Enter price of item > $");
 		String choice =  Helper.readString("Is this menu item healthy? (Y/N) > ").trim();
@@ -151,28 +119,60 @@ public class C206_CaseStudy
 		else
 		{
 			System.out.println("Invalid choice!");
-			return;
 		}
 		
-		String confirm = Helper.readString("Are you sure? (Y/N)").trim();
+		String confirm = Helper.readString("Are you sure? (Y/N) > ").trim();
 		if(confirm.equalsIgnoreCase("Y"))
 		{
-			menuItem.add(new MenuItem(category, name, healthyChoice, price));
-			System.out.println("Item added!");
+			MenuItem mi = new MenuItem(category, name, healthyChoice, price);
+			isAdded = addMenuItem(menuItemList, mi);
 		}
 		else if(confirm.equalsIgnoreCase("N"))
 		{
-			System.out.println("Item not added!");
+			System.out.println("Cancelled creation of item!");
 		}
 		else
 		{
 			System.out.println("Invalid choice!");
 		}
+		
+		if(isAdded)
+		{
+			System.out.println("Item added!");
+		}
+		else
+		{
+			System.out.println("Item not added!");
+		}
 	}
 	
-	public static void deleteMenuItem(ArrayList<MenuItem> menuItem)
+	public static boolean addMenuItem(ArrayList<MenuItem> menuItemList, MenuItem mi)
 	{
 		//Done by Wen Ning
+		
+		if(mi.getName().length() > 20)
+		{
+			System.out.println("Name is too long!");
+			return false;
+		}
+			
+		for(int i = 0; i < menuItemList.size(); i++)
+		{
+			if(menuItemList.get(i).getName().equalsIgnoreCase(mi.getName()))
+			{
+				System.out.println("Duplicate item!");
+				return false;
+			}
+		}
+		menuItemList.add(mi);
+		return true;
+	}
+	
+	public static void inputDeleteMenuItem(ArrayList<MenuItem> menuItemList)
+	{
+		//Done by Wen Ning
+		
+		boolean isDeleted = false;
 		
 		String name = Helper.readString("Enter name of item to delete > ").trim();
 		while(name == null)
@@ -180,89 +180,75 @@ public class C206_CaseStudy
 			name = Helper.readString("Please enter an item name! > ").trim();
 		}
 		
-		for(int i = 0; i < menuItem.size(); i++)
-		{
-			if(menuItem.get(i).getName().equalsIgnoreCase(name))
-			{
-				menuItem.remove(i);
-				System.out.println("Item removed!");
-				return;
-			}
-		}
-		System.out.println("Item not found!");
-	}
-	
-	public static void viewAllMenuItem(ArrayList<MenuItem> menuItem)
-	{
-		//Done by Wen Ning
+		MenuItem mi = new MenuItem("", name, false, 0);
+		isDeleted = deleteMenuItem(menuItemList, mi);
 		
-		System.out.println("1. View all items");
-		System.out.println("2. View individual item");
-		int num = Helper.readInt("Enter choice > ");
-		
-		if(num == 1)
+		if(isDeleted)
 		{
-			if(menuItem.size() > 0)
-			{
-				System.out.println(String.format("%-30s %-20s %-10s %s", "Name", "Category", "Price", "HealthyChoice"));
-				Helper.line(100, "=");
-				for(int i = 0; i < menuItem.size(); i++)
-				{
-					String name = menuItem.get(i).getName();
-					String category = menuItem.get(i).getCategory();
-					String price = String.valueOf(menuItem.get(i).getPrice());
-					String healthyChoice = menuItem.get(i).isHealthyChoice()? "true" : "false";
-					System.out.println(String.format("%-30s %-20s %-10s %s", name, category, price, healthyChoice));
-				}
-			}
-			else
-			{
-				System.out.println("There are no menu items!");
-			}
-		}
-		else if(num == 2)
-		{
-			String name = Helper.readString("Enter name of item to view > ").trim();
-			while(name == null)
-			{
-				name = Helper.readString("Please enter an item name! > ").trim();
-			}
-			
-			for(int i = 0; i < menuItem.size(); i++)
-			{
-				if(menuItem.get(i).getName().equalsIgnoreCase(name))
-				{
-					System.out.println(String.format("%-30s %-20s %-10s %s", "Name", "Category", "Price", "HealthyChoice"));
-					Helper.line(100, "=");
-					
-					name = menuItem.get(i).getName();
-					String category = menuItem.get(i).getCategory();
-					String price = String.valueOf(menuItem.get(i).getPrice());
-					String healthyChoice = menuItem.get(i).isHealthyChoice()? "true" : "false";
-					System.out.println(String.format("%-30s %-20s %-10s %s", name, category, price, healthyChoice));
-					return;
-				}
-			}
-			System.out.println("Item not found!");
+			System.out.println("Item removed!");
 		}
 		else
 		{
-			System.out.println("Invalid choice!");
+			System.out.println("Item not found!");
 		}
 	}
 	
-	// monthly menu
-	public static void createMenu(ArrayList<Menu> monthlyMenu) {
+	public static boolean deleteMenuItem(ArrayList<MenuItem> menuItemList, MenuItem mi)
+	{
+		//Done by Wen Ning
 		
+		for(int i = 0; i < menuItemList.size(); i++)
+		{
+			if(menuItemList.get(i).getName().equalsIgnoreCase(mi.getName()))
+			{
+				menuItemList.remove(i);
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public static void viewAllMenuItem(ArrayList<MenuItem> menuItemList)
+	{
+		//Done by Wen Ning
+		
+		String output = "";
+		output = retrieveAllMenuItem(menuItemList);
+		
+		if(!output.equals(""))
+		{
+			System.out.println(output);
+		}
+		else
+		{
+			System.out.println("There are no menu items!");
+		}
+	}
+	
+	public static String retrieveAllMenuItem(ArrayList<MenuItem> menuItemList)
+	{
+		String output = "";
+		
+		for(int i = 0; i < menuItemList.size(); i++)
+		{
+			String name = menuItemList.get(i).getName();
+			String category = menuItemList.get(i).getCategory();
+			String price = String.valueOf(menuItemList.get(i).getPrice());
+			String healthyChoice = menuItemList.get(i).isHealthyChoice()? "true" : "false";
+			output += String.format("%-30s %-20s %-10s %s", name, category, price, healthyChoice);
+		}
+		return output;
+	}
+	
+	public static void createMenu(ArrayList<Menu> monthlyMenu) {
 		String displayName = Helper.readString("Enter the display name of menu > ");
 		int month = Helper.readInt("Enter the month of menu > ");
-		int numOfItems = Helper.readInt("Enter the number of items > ");
-		
+		int numOfItems = Helper.readInt("Enter the number of item > ");
 		for (int i = 0; i < monthlyMenu.size(); i++) {
 			if(monthlyMenu.get(i).getDisplayName().equalsIgnoreCase(displayName)) {
 				System.out.println("Cannot have duplicate name of menu!");
 			}else {
-				monthlyMenu.add(new Menu(displayName, month, numOfItems,monthlyMenu.get(i).getItems()));
+				// monthlyMenu.addAll(displayName, month, numOfItems);
 				System.out.println("Menu has successfully created.");
 			}
 		}
@@ -271,8 +257,7 @@ public class C206_CaseStudy
 	public static void viewAllMenu(ArrayList<Menu> monthlyMenu) {
 		String output = String.format("%-20s %-10s %-15s %-15s %-10s %-10s -10s\n", "Menu Name","Month","No. of Items","Category","Name","Healthy","Price");
 		for (int i = 0; i < monthlyMenu.size(); i++) {
-			
-			output += String.format("%-47s %-15s %-10s %-10s -10s\n", monthlyMenu.get(i).toString(),monthlyMenu.get(i).getItems());
+			output += String.format("%-96s\n", monthlyMenu.get(i).toString());
 		}
 		System.out.println(output);
 	}
@@ -283,46 +268,7 @@ public class C206_CaseStudy
 			if(monthlyMenu.get(i).getDisplayName().equalsIgnoreCase(delete)) {
 				monthlyMenu.remove(i);
 				System.out.println("Menu has successfully deleted.");
-			}else {
-				System.out.println("No existing menu.");
 			}
 		}
 	}
-	
-	//Bill Methods Starts here
-	//Done by verzon
-	
-	public static void createBill(ArrayList <Bill> billList) {
-		String payee = Helper.readString("Enter the name of payee > ");
-		Double totalAmount = Helper.readDouble("Enter the total amount > ");
-		String dueDate = Helper.readString("Enter the due date > ");
-		
-		Bill bill = new Bill(payee,totalAmount,dueDate);
-		billList.add(bill);
-	}
-	
-	public static void deleteBill(ArrayList <Bill> billList) {
-		System.out.println("=====Displaying bill items, select the S/N to delete=====");
-		viewBill(billList);
-		int num = Helper.readInt("Which S/N of the item you wish to delete? > ");
-		
-		billList.remove(num-1);
-	}
-	public static void viewBill(ArrayList <Bill> billList) {
-		int serialNumber = 1;
-		System.out.println(String.format("%-5s %-20s %-20s %-20s", "S/N", "Payee", "TotalAmount", "DueDate"));
-		for (Bill x :billList) {
-		
-			String output = String.format("%-5s", Integer.toString(serialNumber) );
-			 output = output + x.toString();
-			System.out.println(output);
-			serialNumber++;
-		}
-	}
-	
-	
-	
-	
-	
-	
 }
