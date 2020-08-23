@@ -2,13 +2,14 @@ import java.util.ArrayList;
 
 public class C206_CaseStudy
 {
-	ArrayList<Menu> monthlyMenu = new ArrayList<Menu>();
 
 	public static void main(String[] args)
 	{
 		ArrayList<Menu> monthlyMenu = new ArrayList<Menu>();
 		ArrayList<MenuItem> menuItemList = new ArrayList<MenuItem>();
+		ArrayList<Bill> billList = new ArrayList<Bill>();
 		int option = 0;
+		
 		while (option != 6)
 		{
 			optionMenu();
@@ -44,6 +45,21 @@ public class C206_CaseStudy
 			}
 			else if (option == 4)
 			{
+				menu();
+				int num = Helper.readInt("Which action do you want perform? > ");
+				
+				if(num ==1) {
+					createBill(billList);
+				}
+				else if (num ==2) {
+					viewBill(billList);
+				}
+				else if (num ==3) {
+					deleteBill(billList);
+				}
+				else {
+					System.out.println("Invalid option.");
+				}
 
 			} 
 			else if (option == 5)
@@ -64,6 +80,8 @@ public class C206_CaseStudy
 			} else {
 				System.out.println("Invalid option.");
 			}
+			
+			
 		}
 	}
 
@@ -95,7 +113,7 @@ public class C206_CaseStudy
 		System.out.println("3. Delete");
 
 	}
-	
+
 	public static void inputAddMenuItem(ArrayList<MenuItem> menuItemList)
 	{
 		//Done by Wen Ning
@@ -227,6 +245,8 @@ public class C206_CaseStudy
 	
 	public static String retrieveAllMenuItem(ArrayList<MenuItem> menuItemList)
 	{
+		//Done by Wen Ning
+		
 		String output = "";
 		
 		for(int i = 0; i < menuItemList.size(); i++)
@@ -240,15 +260,18 @@ public class C206_CaseStudy
 		return output;
 	}
 	
+	// monthly menu
 	public static void createMenu(ArrayList<Menu> monthlyMenu) {
+		
 		String displayName = Helper.readString("Enter the display name of menu > ");
 		int month = Helper.readInt("Enter the month of menu > ");
-		int numOfItems = Helper.readInt("Enter the number of item > ");
+		int numOfItems = Helper.readInt("Enter the number of items > ");
+		
 		for (int i = 0; i < monthlyMenu.size(); i++) {
 			if(monthlyMenu.get(i).getDisplayName().equalsIgnoreCase(displayName)) {
 				System.out.println("Cannot have duplicate name of menu!");
 			}else {
-				// monthlyMenu.addAll(displayName, month, numOfItems);
+				monthlyMenu.add(new Menu(displayName, month, numOfItems,monthlyMenu.get(i).getItems()));
 				System.out.println("Menu has successfully created.");
 			}
 		}
@@ -257,7 +280,8 @@ public class C206_CaseStudy
 	public static void viewAllMenu(ArrayList<Menu> monthlyMenu) {
 		String output = String.format("%-20s %-10s %-15s %-15s %-10s %-10s -10s\n", "Menu Name","Month","No. of Items","Category","Name","Healthy","Price");
 		for (int i = 0; i < monthlyMenu.size(); i++) {
-			output += String.format("%-96s\n", monthlyMenu.get(i).toString());
+			
+			output += String.format("%-47s %-15s %-10s %-10s -10s\n", monthlyMenu.get(i).toString(),monthlyMenu.get(i).getItems());
 		}
 		System.out.println(output);
 	}
@@ -268,7 +292,46 @@ public class C206_CaseStudy
 			if(monthlyMenu.get(i).getDisplayName().equalsIgnoreCase(delete)) {
 				monthlyMenu.remove(i);
 				System.out.println("Menu has successfully deleted.");
+			}else {
+				System.out.println("No existing menu.");
 			}
 		}
 	}
+	
+	//Bill Methods Starts here
+	//Done by verzon
+	
+	public static void createBill(ArrayList <Bill> billList) {
+		String payee = Helper.readString("Enter the name of payee > ");
+		Double totalAmount = Helper.readDouble("Enter the total amount > ");
+		String dueDate = Helper.readString("Enter the due date > ");
+		
+		Bill bill = new Bill(payee,totalAmount,dueDate);
+		billList.add(bill);
+	}
+	
+	public static void deleteBill(ArrayList <Bill> billList) {
+		System.out.println("=====Displaying bill items, select the S/N to delete=====");
+		viewBill(billList);
+		int num = Helper.readInt("Which S/N of the item you wish to delete? > ");
+		
+		billList.remove(num-1);
+	}
+	public static void viewBill(ArrayList <Bill> billList) {
+		int serialNumber = 1;
+		System.out.println(String.format("%-5s %-20s %-20s %-20s", "S/N", "Payee", "TotalAmount", "DueDate"));
+		for (Bill x :billList) {
+		
+			String output = String.format("%-5s", Integer.toString(serialNumber) );
+			 output = output + x.toString();
+			System.out.println(output);
+			serialNumber++;
+		}
+	}
+	
+	
+	
+	
+	
+	
 }
