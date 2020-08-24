@@ -2,7 +2,6 @@ import java.util.ArrayList;
 
 public class C206_CaseStudy
 {
-
 	public static void main(String[] args)
 	{
 		ArrayList<Menu> monthlyMenu = new ArrayList<Menu>();
@@ -22,7 +21,7 @@ public class C206_CaseStudy
 			{
 				menu();
 				int num = Helper.readInt("Which action do you want perform? > ");
-				Helper.line(100, "=");
+				Helper.line(80, "-");
 				if (num == 1)
 				{
 					inputAddMenuItem(menuItemList);
@@ -81,8 +80,6 @@ public class C206_CaseStudy
 			} else {
 				System.out.println("Invalid option.");
 			}
-			
-			
 		}
 	}
 
@@ -115,6 +112,8 @@ public class C206_CaseStudy
 
 	}
 
+	//----------------------------Option 2----------------------------
+	
 	public static void inputAddMenuItem(ArrayList<MenuItem> menuItemList)
 	{
 		//Done by Wen Ning
@@ -237,7 +236,7 @@ public class C206_CaseStudy
 		if(!output.equals(""))
 		{
 			System.out.println(String.format("%-20s %-20s %-10s %s\n", "Name", "Category", "Price", "Healthy Choice"));
-			Helper.line(100, "=");
+			Helper.line(80, "-");
 			System.out.println(output);
 		}
 		else
@@ -263,7 +262,8 @@ public class C206_CaseStudy
 		return output;
 	}
 	
-	// monthly menu
+	//----------------------------Option 5----------------------------
+	
 	public static void createMenu(ArrayList<Menu> monthlyMenu) {
 		
 		String displayName = Helper.readString("Enter the display name of menu > ");
@@ -301,6 +301,8 @@ public class C206_CaseStudy
 		}
 	}
 	
+	//----------------------------Option 4----------------------------
+	
 	//Bill Methods Starts here
 	//Done by verzon
 	
@@ -320,6 +322,7 @@ public class C206_CaseStudy
 		
 		billList.remove(num-1);
 	}
+	
 	public static void viewBill(ArrayList <Bill> billList) {
 		int serialNumber = 1;
 		System.out.println(String.format("%-5s %-20s %-20s %-20s", "S/N", "Payee", "TotalAmount", "DueDate"));
@@ -331,10 +334,4 @@ public class C206_CaseStudy
 			serialNumber++;
 		}
 	}
-	
-	
-	
-	
-	
-	
 }
