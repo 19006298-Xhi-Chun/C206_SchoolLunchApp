@@ -10,9 +10,10 @@ public class C206_CaseStudyTest
 {
 	private MenuItem mi1;
 	private MenuItem mi2;
-	
+	private Menu mm1;
+	private Menu mm2;
 	private ArrayList<MenuItem> menuItemList;
-	
+	private ArrayList<Menu> monthlyMenu;
 	public C206_CaseStudyTest()
 	{
 		super();
@@ -23,8 +24,10 @@ public class C206_CaseStudyTest
 	{
 		mi1 = new MenuItem("Western", "Fries", false, 3.0);
 		mi2 = new MenuItem("Vegetarian", "Cabbage", true, 1.5);
-		
+		mm1 = new Menu("July Menu", 7, 1, monthlyMenu.get(0).getItems());
+		mm2 = new Menu("August Menu",8, 2, monthlyMenu.get(1).getItems());
 		menuItemList = new ArrayList<MenuItem>();
+		monthlyMenu = new ArrayList<Menu>();
 	}
 
 	@After
@@ -106,4 +109,59 @@ public class C206_CaseStudyTest
 		ok = C206_CaseStudy.addMenuItem(menuItemList, miTest);
 		assertFalse("Test if an item is NOT ok to delete", ok);
 	}
+	
+	// monthly menu
+	@Test
+	public void testCreateMenu() {
+		// check the menu is created. -normal
+		C206_CaseStudy.createMenu(monthlyMenu, mm1);
+		assertSame("Check that menu is create", mm1, monthlyMenu.get(0));
+
+		// check duplicate - error
+		boolean duplicate;
+		duplicate = C206_CaseStudy.createMenu(monthlyMenu, mm1);
+		assertFalse("Test if duplicate menu cannot to create", duplicate);
+
+		// check the category -boundary
+		for (int i = 0; i < monthlyMenu.size(); i++) {
+			assertEquals("Check that menu has different category", menuItemList.get(i).getCategory(), "Western");
+		}
+	}
+	@Test
+	public void testViewMenu() {
+		String output = "";
+		// check the list is not null -error
+		assertNotNull("Test is there is a valid monthlyMenu to retrieve from", monthlyMenu);
+
+		// test the monthly menu are correct - normal
+		
+		C206_CaseStudy.createMenu(monthlyMenu, mm1);
+		C206_CaseStudy.createMenu(monthlyMenu, mm2);
+		String allMonthlyMenu = C206_CaseStudy.retrieveAllMonthlyMenu(monthlyMenu);
+
+		output += String.format("%-20s %-10s %-15s %-15s %-10s %-10s -10s\n", "July Menu", "7", "1", menuItemList.get(0).getCategory(),menuItemList.get(0).getName(),menuItemList.get(0).isHealthyChoice(),menuItemList.get(0).getPrice());
+		output += String.format("%-20s %-10s %-15s %-15s %-10s %-10s -10s\n", "August Menu", "8", "2", menuItemList.get(1).getCategory(),menuItemList.get(1).getName(),menuItemList.get(1).isHealthyChoice(),menuItemList.get(1).getPrice());
+
+		assertEquals("Test that ViewAllMenuItem works", output, allMonthlyMenu);
+	}
+	@Test
+	public void testDeleteMenu() {
+		//test that the system can delete the existing menu -normal
+		boolean canDelete;
+
+		C206_CaseStudy.createMenu(monthlyMenu, mm1); // only create mm1
+		canDelete = C206_CaseStudy.deleteMenu(monthlyMenu, mm1);
+		assertTrue("Test if an existing menu can be deleted", canDelete);
+
+		
+		// test if a non-existing item can not be deleted -error
+		canDelete = C206_CaseStudy.deleteMenu(monthlyMenu, mm2);
+		assertFalse("Test if a non-existing menu cannot be deleted", canDelete);
+		
+		// test if an existing can not be deleted -error
+		Menu mmTest = new Menu("June Menu", 6, 1, menuItemList);
+		canDelete = C206_CaseStudy.createMenu(monthlyMenu, mmTest);
+		assertFalse("Test if an item cannot be deleted", canDelete);
+	}
+
 }

@@ -53,9 +53,10 @@ public class Menu {
 		this.items = items;
 	}
 	public String toString() {
-		String output = String.format("%-20s %-10d %-15d\n", displayName,month,numberOfItems);
+		String output = String.format("%-20s %-10d %-15d", displayName,month,numberOfItems);
 		return output;
 		
 	}
+
 
 }
