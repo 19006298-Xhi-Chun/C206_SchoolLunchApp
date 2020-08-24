@@ -72,15 +72,15 @@ public class C206_CaseStudyTest
 		
 		//test if empty string is retrieved when item list is empty -error
 		String testOutput = C206_CaseStudy.retrieveAllMenuItem(menuItemList);
-		assertSame("Test if output string is empty when item list is empty", testOutput, "");
+		assertEquals("Test if output string is empty when item list is empty", testOutput, "");
 		
 		//test if the expected output string is the same as MenuItemList retrieved from Case Study -normal
 		C206_CaseStudy.addMenuItem(menuItemList, mi1);
 		C206_CaseStudy.addMenuItem(menuItemList, mi2);
 		String allMenuItem = C206_CaseStudy.retrieveAllMenuItem(menuItemList);
 
-		testOutput = String.format("%-30s %-20s %-10s %s", "Fries", "Western", "3.0", "false");
-		testOutput += String.format("%-30s %-20s %-10s %s", "Cabbage", "Vegetarian", "1.5", "true");
+		testOutput = String.format("%-20s %-20s %-10s %s\n", "Fries", "Western", "3.0", "false");
+		testOutput += String.format("%-20s %-20s %-10s %s\n", "Cabbage", "Vegetarian", "1.5", "true");
 		
 		assertEquals("Test that ViewAllMenuItem works", testOutput, allMenuItem);
 	}

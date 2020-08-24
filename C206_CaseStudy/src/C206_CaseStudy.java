@@ -22,6 +22,7 @@ public class C206_CaseStudy
 			{
 				menu();
 				int num = Helper.readInt("Which action do you want perform? > ");
+				Helper.line(100, "=");
 				if (num == 1)
 				{
 					inputAddMenuItem(menuItemList);
@@ -235,6 +236,8 @@ public class C206_CaseStudy
 		
 		if(!output.equals(""))
 		{
+			System.out.println(String.format("%-20s %-20s %-10s %s\n", "Name", "Category", "Price", "Healthy Choice"));
+			Helper.line(100, "=");
 			System.out.println(output);
 		}
 		else
@@ -255,7 +258,7 @@ public class C206_CaseStudy
 			String category = menuItemList.get(i).getCategory();
 			String price = String.valueOf(menuItemList.get(i).getPrice());
 			String healthyChoice = menuItemList.get(i).isHealthyChoice()? "true" : "false";
-			output += String.format("%-30s %-20s %-10s %s", name, category, price, healthyChoice);
+			output += String.format("%-20s %-20s %-10s %s\n", name, category, price, healthyChoice);
 		}
 		return output;
 	}
