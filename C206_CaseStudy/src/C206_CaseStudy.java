@@ -193,10 +193,6 @@ public class C206_CaseStudy
 		boolean isDeleted = false;
 		
 		String name = Helper.readString("Enter name of item to delete > ").trim();
-		while(name == null)
-		{
-			name = Helper.readString("Please enter an item name! > ").trim();
-		}
 		
 		MenuItem mi = new MenuItem("", name, false, 0);
 		isDeleted = deleteMenuItem(menuItemList, mi);
@@ -214,6 +210,12 @@ public class C206_CaseStudy
 	public static boolean deleteMenuItem(ArrayList<MenuItem> menuItemList, MenuItem mi)
 	{
 		//Done by Wen Ning
+		
+		if(mi.getName().equalsIgnoreCase(""))
+		{
+			System.out.println("Please enter an item name!");
+			return false;
+		}
 		
 		for(int i = 0; i < menuItemList.size(); i++)
 		{

@@ -53,7 +53,7 @@ public class C206_CaseStudyTest
 		
 		//test if name exceeding size of 20 is added -boundary
 		String testName = "";
-		for(int i = 0; i < 20; i++)
+		for(int i = 0; i < 21; i++)
 		{
 			testName += "A";
 		}
@@ -103,7 +103,7 @@ public class C206_CaseStudyTest
 		
 		//test if an empty item can not be deleted -error
 		MenuItem miTest = new MenuItem("", "", false, 0);
-		ok = C206_CaseStudy.addMenuItem(menuItemList, miTest);
+		ok = C206_CaseStudy.deleteMenuItem(menuItemList, miTest);
 		assertFalse("Test if an item is NOT ok to delete", ok);
 	}
 }
