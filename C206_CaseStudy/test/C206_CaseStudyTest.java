@@ -12,6 +12,8 @@ public class C206_CaseStudyTest
 	private MenuItem mi2;
 	private Menu mm1;
 	private Menu mm2;
+	private Bill b1;
+	private ArrayList<Bill> billList;
 	private ArrayList<MenuItem> menuItemList;
 	private ArrayList<Menu> monthlyMenu;
 	public C206_CaseStudyTest()
@@ -26,6 +28,8 @@ public class C206_CaseStudyTest
 		mi2 = new MenuItem("Vegetarian", "Cabbage", true, 1.5);
 		mm1 = new Menu("July Menu", 7, 1, monthlyMenu.get(0).getItems());
 		mm2 = new Menu("August Menu",8, 2, monthlyMenu.get(1).getItems());
+		b1 = new Bill("Verzon",123.0,"20201231");
+		billList = new ArrayList<Bill> ();
 		menuItemList = new ArrayList<MenuItem>();
 		monthlyMenu = new ArrayList<Menu>();
 	}
@@ -163,5 +167,29 @@ public class C206_CaseStudyTest
 		canDelete = C206_CaseStudy.createMenu(monthlyMenu, mmTest);
 		assertFalse("Test if an item cannot be deleted", canDelete);
 	}
+	
+	//verzon 
+	@Test
+	public void testCreateBill() {
+		// check the menu is able to be created
+		C206_CaseStudy.createBill(billList);
+		assertSame("Check that menu is create", b1, billList.get(0));
+	}
+	
+	@Test
+	public void testViewBill() {
+		C206_CaseStudy.createBill(billList);
+		String allMonthlyMenu = C206_CaseStudy.viewBill(bill);
+	}
+	
+	
+	@Test
+	public void testDeleteBill() {
+		//test that the system can delete the existing menu 
+		boolean deleteBill;	
+
+		C206_CaseStudy.createBill(billList); 
+		deleteBill = C206_CaseStudy.deleteBill(bill);
+		assertTrue("Test if an existing menu can be deleted", deleteBill);
 
 }
