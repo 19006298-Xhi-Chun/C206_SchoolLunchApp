@@ -13,75 +13,85 @@ public class C206_CaseStudy {
 			option = Helper.readInt("Which action do you want perform? > ");
 
 			if (option == 1) {
-
-			} else if (option == 2) {
-
-				if (option == 1) {
-					menu();
-					int num = Helper.readInt("Which action do you want to perform? > ");
-					Helper.line(80, "-");
-					if (num == 1) {
-						String newName = Helper.readString("Enter new Account username:");
-						String newStudentId = Helper.readString("Enter new Student ID:");
-						String newContactNumber = Helper.readString("Enter your contact number:");
-						String newRole = Helper.readString("Enter user role:");
-						createUserAccount(AccountList, newName, newStudentId, newContactNumber, newRole);
-					}
-					if (num == 2) {
-						viewUserAccount(AccountList);
-					}
-					if (num == 3) {
-						String oldName1 = Helper.readString("Enter name of deleting account :");
-						String oldStudentID1 = Helper.readString("Enter Student ID of deleting Account :");
-						deleteUserAccount(AccountList, oldName1, oldStudentID1);
-					}
-				} else if (option == 2) {
-
-					menu();
-					int num = Helper.readInt("Which action do you want perform? > ");
-					Helper.line(80, "-");
-					if (num == 1) {
+				menu();
+				int num = Helper.readInt("Which action do you want to perform? > ");
+				Helper.line(80, "-");
+				if (num == 1) {
+					String newName = Helper.readString("Enter new Account username:");
+					String newStudentId = Helper.readString("Enter new Student ID:");
+					String newContactNumber = Helper.readString("Enter your contact number:");
+					String newRole = Helper.readString("Enter user role:");
+					createUserAccount(AccountList, newName, newStudentId, newContactNumber, newRole);
+				}
+				if (num == 2) {
+					viewUserAccount(AccountList);
+				}
+				if (num == 3) {
+					String oldName1 = Helper.readString("Enter name of deleting account :");
+					String oldStudentID1 = Helper.readString("Enter Student ID of deleting Account :");
+					deleteUserAccount(AccountList, oldName1, oldStudentID1);
+				}
+			} 
+			else if (option == 2) 
+			{
+				menu();
+				int num = Helper.readInt("Which action do you want perform? > ");
+				Helper.line(80, "-");
+				if (num == 1) 
+				{
+					if(loginAdmin(AccountList))
+					{
 						inputAddMenuItem(menuItemList);
-					} else if (num == 2) {
-						viewAllMenuItem(menuItemList);
-					} else if (num == 3) {
+					}
+				} 
+				else if (num == 2) 
+				{
+					viewAllMenuItem(menuItemList);
+				} 
+				else if (num == 3) 
+				{
+					if(loginAdmin(AccountList))
+					{
 						inputDeleteMenuItem(menuItemList);
-					} else {
-						System.out.println("Invalid option.");
 					}
-				} else if (option == 3) {
+				} 
+				else 
+				{
+					System.out.println("Invalid option.");
+				}
+			} 
+			else if (option == 3) {
 
-				} else if (option == 4) {
-					menu();
-					int num = Helper.readInt("Which action do you want perform? > ");
+			} else if (option == 4) {
+				menu();
+				int num = Helper.readInt("Which action do you want perform? > ");
 
-					if (num == 1) {
-						createBill(billList);
-					} else if (num == 2) {
-						viewBill(billList);
-					} else if (num == 3) {
-						deleteBill(billList);
-					} else {
-						System.out.println("Invalid option.");
-					}
-
-				} else if (option == 5) {
-					menu();
-					int num = Helper.readInt("Which action do you want perform? > ");
-					if (num == 1) {
-						inputCreateMenu(monthlyMenu);
-					} else if (num == 2) {
-						viewAllMenu(monthlyMenu);
-					} else if (num == 3) {
-						inputDeleteMenu(monthlyMenu);
-					} else {
-						System.out.println("Invalid option.");
-					}
-				} else if (option == 6) {
-					System.out.println("Bye!");
+				if (num == 1) {
+					createBill(billList);
+				} else if (num == 2) {
+					viewBill(billList);
+				} else if (num == 3) {
+					deleteBill(billList);
 				} else {
 					System.out.println("Invalid option.");
 				}
+
+			} else if (option == 5) {
+				menu();
+				int num = Helper.readInt("Which action do you want perform? > ");
+				if (num == 1) {
+					inputCreateMenu(monthlyMenu);
+				} else if (num == 2) {
+					viewAllMenu(monthlyMenu);
+				} else if (num == 3) {
+					inputDeleteMenu(monthlyMenu);
+				} else {
+					System.out.println("Invalid option.");
+				}
+			} else if (option == 6) {
+				System.out.println("Bye!");
+			} else {
+				System.out.println("Invalid option.");
 			}
 		}
 	}
@@ -113,6 +123,21 @@ public class C206_CaseStudy {
 		System.out.println("2. View");
 		System.out.println("3. Delete");
 
+	}
+	
+	public static boolean loginAdmin(ArrayList<Account> AccountList)
+	{
+		String name = Helper.readString("Enter account username > ");
+		for(int i = 0; i < AccountList.size(); i++)
+		{
+			if(name.equals(AccountList.get(i).getName()) && AccountList.get(i).getRole().equalsIgnoreCase("admin"))
+			{
+				System.out.println("Log in successful");
+				return true;
+			}
+		}
+		System.out.println("No such username or not admin!");
+		return false;
 	}
 
 	// ----------------------------Option 1----------------------------
