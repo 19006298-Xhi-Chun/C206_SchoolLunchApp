@@ -1,8 +1,8 @@
 import java.util.ArrayList;
-import java.util.Collection;
 
 public class C206_CaseStudy {
 	public static void main(String[] args) {
+		ArrayList<Account> AccountList = new ArrayList<Account>();
 		ArrayList<Menu> monthlyMenu = new ArrayList<Menu>();
 		ArrayList<MenuItem> menuItemList = new ArrayList<MenuItem>();
 		ArrayList<Bill> billList = new ArrayList<Bill>();
@@ -11,53 +11,77 @@ public class C206_CaseStudy {
 		while (option != 6) {
 			optionMenu();
 			option = Helper.readInt("Which action do you want perform? > ");
+
 			if (option == 1) {
 
 			} else if (option == 2) {
-				menu();
-				int num = Helper.readInt("Which action do you want perform? > ");
-				Helper.line(80, "-");
-				if (num == 1) {
-					inputAddMenuItem(menuItemList);
-				} else if (num == 2) {
-					viewAllMenuItem(menuItemList);
-				} else if (num == 3) {
-					inputDeleteMenuItem(menuItemList);
+
+				if (option == 1) {
+					menu();
+					int num = Helper.readInt("Which action do you want to perform? > ");
+					Helper.line(80, "-");
+					if (num == 1) {
+						String newName = Helper.readString("Enter new Account username:");
+						String newStudentId = Helper.readString("Enter new Student ID:");
+						String newContactNumber = Helper.readString("Enter your contact number:");
+						String newRole = Helper.readString("Enter user role:");
+						createUserAccount(AccountList, newName, newStudentId, newContactNumber, newRole);
+					}
+					if (num == 2) {
+						viewUserAccount(AccountList);
+					}
+					if (num == 3) {
+						String oldName1 = Helper.readString("Enter name of deleting account :");
+						String oldStudentID1 = Helper.readString("Enter Student ID of deleting Account :");
+						deleteUserAccount(AccountList, oldName1, oldStudentID1);
+					}
+				} else if (option == 2) {
+
+					menu();
+					int num = Helper.readInt("Which action do you want perform? > ");
+					Helper.line(80, "-");
+					if (num == 1) {
+						inputAddMenuItem(menuItemList);
+					} else if (num == 2) {
+						viewAllMenuItem(menuItemList);
+					} else if (num == 3) {
+						inputDeleteMenuItem(menuItemList);
+					} else {
+						System.out.println("Invalid option.");
+					}
+				} else if (option == 3) {
+
+				} else if (option == 4) {
+					menu();
+					int num = Helper.readInt("Which action do you want perform? > ");
+
+					if (num == 1) {
+						createBill(billList);
+					} else if (num == 2) {
+						viewBill(billList);
+					} else if (num == 3) {
+						deleteBill(billList);
+					} else {
+						System.out.println("Invalid option.");
+					}
+
+				} else if (option == 5) {
+					menu();
+					int num = Helper.readInt("Which action do you want perform? > ");
+					if (num == 1) {
+						inputCreateMenu(monthlyMenu);
+					} else if (num == 2) {
+						viewAllMenu(monthlyMenu);
+					} else if (num == 3) {
+						inputDeleteMenu(monthlyMenu);
+					} else {
+						System.out.println("Invalid option.");
+					}
+				} else if (option == 6) {
+					System.out.println("Bye!");
 				} else {
 					System.out.println("Invalid option.");
 				}
-			} else if (option == 3) {
-
-			} else if (option == 4) {
-				menu();
-				int num = Helper.readInt("Which action do you want perform? > ");
-
-				if (num == 1) {
-					createBill(billList);
-				} else if (num == 2) {
-					viewBill(billList);
-				} else if (num == 3) {
-					deleteBill(billList);
-				} else {
-					System.out.println("Invalid option.");
-				}
-
-			} else if (option == 5) {
-				menu();
-				int num = Helper.readInt("Which action do you want perform? > ");
-				if (num == 1) {
-					inputCreateMenu(monthlyMenu);
-				} else if (num == 2) {
-					viewAllMenu(monthlyMenu);
-				} else if (num == 3) {
-					inputDeleteMenu(monthlyMenu);
-				} else {
-					System.out.println("Invalid option.");
-				}
-			} else if (option == 6) {
-				System.out.println("Bye!");
-			} else {
-				System.out.println("Invalid option.");
 			}
 		}
 	}
@@ -89,6 +113,40 @@ public class C206_CaseStudy {
 		System.out.println("2. View");
 		System.out.println("3. Delete");
 
+	}
+
+	// ----------------------------Option 1----------------------------
+	// Done by Aravind
+	public static void createUserAccount(ArrayList<Account> AccountList, String newName, String newStudentId,
+			String newContactNumber, String newRole) {
+		Account newAccount = new Account(newName, newStudentId, newContactNumber, newRole);
+		AccountList.add(newAccount);
+		System.out.println("Account has been successfully added!");
+	}
+
+	public static void viewUserAccount(ArrayList<Account> AccountList) {
+		String header = String.format("%s %20s %20s %10s", "USERNAME", "STUDENT ID", "CONTACT", "ROLE");
+		System.out.println(header);
+		Helper.line(80, "-");
+		for (int i = 0; i < AccountList.size(); i++) {
+			String userName = AccountList.get(i).getName();
+			String stID = AccountList.get(i).getStudentId();
+			String conNum = AccountList.get(i).getContactNumber();
+			String rle = AccountList.get(i).getRole();
+			String format = String.format("%s %20s %20s %20s", userName, stID, conNum, rle);
+			System.out.println(format);
+		}
+	}
+
+	public static void deleteUserAccount(ArrayList<Account> AccountList, String oldName1, String oldStudentID1) {
+		for (int i = 0; i < AccountList.size(); i++) {
+			if (AccountList.get(i).getName().equalsIgnoreCase(oldName1)
+					&& AccountList.get(i).getStudentId().equalsIgnoreCase(oldStudentID1)) {
+				AccountList.remove(i);
+				System.out.println("Account has been successfully deleted!");
+				break;
+			}
+		}
 	}
 
 	// ----------------------------Option 2----------------------------
@@ -153,10 +211,10 @@ public class C206_CaseStudy {
 		boolean isDeleted = false;
 
 		String name = Helper.readString("Enter name of item to delete > ").trim();
+
 		while (name == null) {
 			name = Helper.readString("Please enter an item name! > ").trim();
 		}
-
 		MenuItem mi = new MenuItem("", name, false, 0);
 		isDeleted = deleteMenuItem(menuItemList, mi);
 
@@ -177,7 +235,9 @@ public class C206_CaseStudy {
 			}
 		}
 		return false;
-	}
+
+		}
+		
 
 	public static void viewAllMenuItem(ArrayList<MenuItem> menuItemList) {
 		// Done by Wen Ning
@@ -211,7 +271,6 @@ public class C206_CaseStudy {
 
 	// ----------------------------Option 5----------------------------
 
-	// monthly menu
 	public static void inputCreateMenu(ArrayList<Menu> monthlyMenu) {
 		boolean isCreate = false;
 		ArrayList<MenuItem> menuItemList = new ArrayList<MenuItem>();
