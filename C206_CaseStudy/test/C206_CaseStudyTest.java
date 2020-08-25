@@ -191,5 +191,5 @@ public class C206_CaseStudyTest
 		C206_CaseStudy.createBill(billList); 
 		deleteBill = C206_CaseStudy.deleteBill(bill);
 		assertTrue("Test if an existing menu can be deleted", deleteBill);
-
+	}
 }

@@ -1,11 +1,13 @@
 import java.util.ArrayList;
 
 public class C206_CaseStudy {
+	private static ArrayList<Account> AccountList = new ArrayList<Account>();
+	private static ArrayList<Menu> monthlyMenu = new ArrayList<Menu>();
+	private static ArrayList<MenuItem> menuItemList = new ArrayList<MenuItem>();
+	private static ArrayList<Bill> billList = new ArrayList<Bill>();
+
 	public static void main(String[] args) {
-		ArrayList<Account> AccountList = new ArrayList<Account>();
-		ArrayList<Menu> monthlyMenu = new ArrayList<Menu>();
-		ArrayList<MenuItem> menuItemList = new ArrayList<MenuItem>();
-		ArrayList<Bill> billList = new ArrayList<Bill>();
+
 		int option = 0;
 
 		while (option != 6) {
@@ -31,36 +33,24 @@ public class C206_CaseStudy {
 					String oldStudentID1 = Helper.readString("Enter Student ID of deleting Account :");
 					deleteUserAccount(AccountList, oldName1, oldStudentID1);
 				}
-			} 
-			else if (option == 2) 
-			{
+			} else if (option == 2) {
 				menu();
 				int num = Helper.readInt("Which action do you want perform? > ");
 				Helper.line(80, "-");
-				if (num == 1) 
-				{
-					if(loginAdmin(AccountList))
-					{
+				if (num == 1) {
+					if (loginAdmin(AccountList)) {
 						inputAddMenuItem(menuItemList);
 					}
-				} 
-				else if (num == 2) 
-				{
+				} else if (num == 2) {
 					viewAllMenuItem(menuItemList);
-				} 
-				else if (num == 3) 
-				{
-					if(loginAdmin(AccountList))
-					{
+				} else if (num == 3) {
+					if (loginAdmin(AccountList)) {
 						inputDeleteMenuItem(menuItemList);
 					}
-				} 
-				else 
-				{
+				} else {
 					System.out.println("Invalid option.");
 				}
-			} 
-			else if (option == 3) {
+			} else if (option == 3) {
 
 			} else if (option == 4) {
 				menu();
@@ -85,6 +75,8 @@ public class C206_CaseStudy {
 					viewAllMenu(monthlyMenu);
 				} else if (num == 3) {
 					inputDeleteMenu(monthlyMenu);
+				} else if (num == 4) {
+					updateMenu(monthlyMenu);
 				} else {
 					System.out.println("Invalid option.");
 				}
@@ -122,16 +114,14 @@ public class C206_CaseStudy {
 		System.out.println("1. Create");
 		System.out.println("2. View");
 		System.out.println("3. Delete");
+		System.out.println("4. Update");
 
 	}
-	
-	public static boolean loginAdmin(ArrayList<Account> AccountList)
-	{
+
+	public static boolean loginAdmin(ArrayList<Account> AccountList) {
 		String name = Helper.readString("Enter account username > ");
-		for(int i = 0; i < AccountList.size(); i++)
-		{
-			if(name.equals(AccountList.get(i).getName()) && AccountList.get(i).getRole().equalsIgnoreCase("admin"))
-			{
+		for (int i = 0; i < AccountList.size(); i++) {
+			if (name.equals(AccountList.get(i).getName()) && AccountList.get(i).getRole().equalsIgnoreCase("admin")) {
 				System.out.println("Log in successful");
 				return true;
 			}
@@ -261,8 +251,7 @@ public class C206_CaseStudy {
 		}
 		return false;
 
-		}
-		
+	}
 
 	public static void viewAllMenuItem(ArrayList<MenuItem> menuItemList) {
 		// Done by Wen Ning
@@ -298,9 +287,13 @@ public class C206_CaseStudy {
 
 	public static void inputCreateMenu(ArrayList<Menu> monthlyMenu) {
 		boolean isCreate = false;
-		ArrayList<MenuItem> menuItemList = new ArrayList<MenuItem>();
+
 		String displayName = Helper.readString("Enter the display name of menu > ");
 		int month = Helper.readInt("Enter the month of menu > ");
+		while (month < 1 || month > 12) {
+			System.out.println("Invalid month");
+			month = Helper.readInt("Enter the month of menu > ");
+		}
 		int numOfItems = Helper.readInt("Enter the number of items > ");
 
 		String listItem = String.format("%-20s %-20s %-10s %s\n", "Western", "Fries", "false", "3.0");
@@ -317,7 +310,9 @@ public class C206_CaseStudy {
 				String category = menuItemList.get(i).getCategory();
 				boolean healthyChoice = menuItemList.get(i).isHealthyChoice();
 				double price = menuItemList.get(i).getPrice();
-				Menu mm = new Menu(displayName, month, numOfItems, menuItemList);
+				ArrayList<MenuItem> items = new ArrayList<MenuItem>();
+				items.add(new MenuItem(name, category, healthyChoice, price));
+				Menu mm = new Menu(displayName, month, numOfItems, items);
 				monthlyMenu.add(mm);
 				isCreate = true;
 				break;
@@ -352,19 +347,50 @@ public class C206_CaseStudy {
 		output = retrieveAllMonthlyMenu(monthlyMenu);
 
 		if (!output.equals("")) {
-		System.out.println(String.format("%-20s %-10s %-15s %-15s %-10s %-10s %-10s", "Menu Name", "Month",
-				"No. of Items", "Category", "Name", "Healthy", "Price"));
-		System.out.println(output);
-		}else {
+			System.out.println(String.format("%-20s %-10s %-15s %-15s %-10s %-10s %-10s", "Menu Name", "Month",
+					"No. of Items", "Category", "Name", "Healthy", "Price"));
+			System.out.println(output);
+		} else {
 			System.out.println("There are no monthly menu!");
 		}
-		
-		
+
+	}
+
+	public static void updateMenu(ArrayList<Menu> monthlyMenu) {
+		String displayName = Helper.readString("Enter the display name of menu > ");
+		for (int i = 0; i < monthlyMenu.size(); i++) {
+			if (monthlyMenu.get(i).getDisplayName().equalsIgnoreCase(displayName)) {
+				monthlyMenu.get(i).getItems();
+				String newDisplayName = Helper.readString("Enter the new display name of menu > ");
+				int newMonth = Helper.readInt("Enter the new month of menu > ");
+				while (newMonth < 1 || newMonth > 12) {
+					System.out.println("Invalid month");
+					newMonth = Helper.readInt("Enter the new month of menu > ");
+				}
+				Menu mm = new Menu(newDisplayName, newMonth, monthlyMenu.get(i).getNumberOfItems(),monthlyMenu.get(i).getItems());
+				monthlyMenu.set(i, mm);
+				System.out.println("Menu successfully updated.");
+
+			} else {
+				System.out.println("This menu is not existing.");
+			}
+		}
+
+	}
+
+	public static String retrieveAllMonthlyMenu(ArrayList<Menu> monthlyMenu) {
+		String output = "";
+		for (int i = 0; i < monthlyMenu.size(); i++) {
+			output += String.format("%-47s %-15s %-10s %-10b %-10.2f\n", monthlyMenu.get(i).toString(),
+					monthlyMenu.get(i).getItems().get(i).getCategory(), monthlyMenu.get(i).getItems().get(i).getName(),
+					monthlyMenu.get(i).getItems().get(i).isHealthyChoice(),
+					monthlyMenu.get(i).getItems().get(i).getPrice());
+		}
+		return output;
 	}
 
 	public static void inputDeleteMenu(ArrayList<Menu> monthlyMenu) {
 		boolean isDeleted = false;
-		// ArrayList<MenuItem> menuItemList = new ArrayList<MenuItem>();
 		for (int i = 0; i < monthlyMenu.size(); i++) {
 			String delete = Helper.readString("Enter the name of menu which you want to delete > ");
 			if (delete == null) {
@@ -394,17 +420,6 @@ public class C206_CaseStudy {
 			}
 		}
 		return false;
-	}
-
-	public static String retrieveAllMonthlyMenu(ArrayList<Menu> monthlyMenu) {
-		String output = "";
-		for (int i = 0; i < monthlyMenu.size(); i++) {
-			output += String.format("%-47s %-15s %-10s %-10b %-10.2f\n", monthlyMenu.get(i).toString(),
-					monthlyMenu.get(i).getItems().get(i).getCategory(), monthlyMenu.get(i).getItems().get(i).getName(),
-					monthlyMenu.get(i).getItems().get(i).isHealthyChoice(),
-					monthlyMenu.get(i).getItems().get(i).getPrice());
-		}
-		return output;
 	}
 
 	// ----------------------------Option 4----------------------------
