@@ -149,6 +149,10 @@ public class C206_CaseStudyTest
 		assertEquals("Test that ViewAllMenuItem works", output, allMonthlyMenu);
 	}
 	@Test
+	public void testUpdateMenu() {
+		
+	}
+	@Test
 	public void testDeleteMenu() {
 		//test that the system can delete the existing menu -normal
 		boolean canDelete;

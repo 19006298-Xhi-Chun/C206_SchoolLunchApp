@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Random;
 
 public class C206_CaseStudy {
 	private static ArrayList<Account> AccountList = new ArrayList<Account>();
@@ -301,26 +302,29 @@ public class C206_CaseStudy {
 		System.out.println(listItem);
 		menuItemList.add(new MenuItem("Western", "Fries", false, 3.0));
 		menuItemList.add(new MenuItem("Vegetarian", "Cabbage", true, 1.5));
-
-		String choose = Helper.readString("Choose item to add > ");
-		for (int i = 0; i < menuItemList.size(); i++) {
-			String name = menuItemList.get(i).getName();
-			if (choose.equalsIgnoreCase(name)) {
-				// refactoring
-				String category = menuItemList.get(i).getCategory();
-				boolean healthyChoice = menuItemList.get(i).isHealthyChoice();
-				double price = menuItemList.get(i).getPrice();
-				ArrayList<MenuItem> items = new ArrayList<MenuItem>();
-				items.add(new MenuItem(name, category, healthyChoice, price));
-				Menu mm = new Menu(displayName, month, numOfItems, items);
-				monthlyMenu.add(mm);
-				isCreate = true;
-				break;
-			} else {
-				System.out.println("Invalid choice!");
-			}
+		// for (int n = 0; n <= numOfItems; n++) {
+		// String choose = Helper.readString("Choose item to add > ");
+		// for (int i = 0; i < menuItemList.size(); i++) {
+		if(monthlyMenu.size() <= numOfItems) {
+			Random num = new Random();
+			int numItems = num.nextInt(menuItemList.size());
+			String name = menuItemList.get(numItems).getName();
+			// if (!name.equalsIgnoreCase(menuItemList.get(n).getName())) {
+			// refactoring
+			String category = menuItemList.get(numItems).getCategory();
+			boolean healthyChoice = menuItemList.get(numItems).isHealthyChoice();
+			double price = menuItemList.get(numItems).getPrice();
+			ArrayList<MenuItem> items = new ArrayList<MenuItem>();
+			items.add(new MenuItem(name, category, healthyChoice, price));
+			Menu mm = new Menu(displayName, month, numOfItems, items);
+			monthlyMenu.add(mm);
+			isCreate = true;
+			//break;
+			// } //else {
+			// numItems = num.nextInt(menuItemList.size());
+			// }
 		}
-
+		// }
 		if (isCreate == true) {
 			System.out.println("Menu created!");
 		} else {
@@ -367,7 +371,8 @@ public class C206_CaseStudy {
 					System.out.println("Invalid month");
 					newMonth = Helper.readInt("Enter the new month of menu > ");
 				}
-				Menu mm = new Menu(newDisplayName, newMonth, monthlyMenu.get(i).getNumberOfItems(),monthlyMenu.get(i).getItems());
+				Menu mm = new Menu(newDisplayName, newMonth, monthlyMenu.get(i).getNumberOfItems(),
+						monthlyMenu.get(i).getItems());
 				monthlyMenu.set(i, mm);
 				System.out.println("Menu successfully updated.");
 
@@ -380,12 +385,19 @@ public class C206_CaseStudy {
 
 	public static String retrieveAllMonthlyMenu(ArrayList<Menu> monthlyMenu) {
 		String output = "";
+		// for (int n = 0; n < monthlyMenu.get(n).getNumberOfItems(); n++) {
+
 		for (int i = 0; i < monthlyMenu.size(); i++) {
+			// while (monthlyMenu.size() <= monthlyMenu.getNumberOfItems()) {
 			output += String.format("%-47s %-15s %-10s %-10b %-10.2f\n", monthlyMenu.get(i).toString(),
 					monthlyMenu.get(i).getItems().get(i).getCategory(), monthlyMenu.get(i).getItems().get(i).getName(),
 					monthlyMenu.get(i).getItems().get(i).isHealthyChoice(),
 					monthlyMenu.get(i).getItems().get(i).getPrice());
+			// break;
+			// }
+			// System.out.println("The menu is full.");
 		}
+		// }
 		return output;
 	}
 
