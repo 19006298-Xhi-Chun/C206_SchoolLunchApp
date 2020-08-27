@@ -305,7 +305,7 @@ public class C206_CaseStudy {
 		// for (int n = 0; n <= numOfItems; n++) {
 		// String choose = Helper.readString("Choose item to add > ");
 		// for (int i = 0; i < menuItemList.size(); i++) {
-		if(monthlyMenu.size() <= numOfItems) {
+		while (monthlyMenu.size() <= numOfItems) {
 			Random num = new Random();
 			int numItems = num.nextInt(menuItemList.size());
 			String name = menuItemList.get(numItems).getName();
@@ -319,7 +319,7 @@ public class C206_CaseStudy {
 			Menu mm = new Menu(displayName, month, numOfItems, items);
 			monthlyMenu.add(mm);
 			isCreate = true;
-			//break;
+			break;
 			// } //else {
 			// numItems = num.nextInt(menuItemList.size());
 			// }
@@ -385,21 +385,25 @@ public class C206_CaseStudy {
 
 	public static String retrieveAllMonthlyMenu(ArrayList<Menu> monthlyMenu) {
 		String output = "";
-		// for (int n = 0; n < monthlyMenu.get(n).getNumberOfItems(); n++) {
-
-		for (int i = 0; i < monthlyMenu.size(); i++) {
-			// while (monthlyMenu.size() <= monthlyMenu.getNumberOfItems()) {
-			output += String.format("%-47s %-15s %-10s %-10b %-10.2f\n", monthlyMenu.get(i).toString(),
-					monthlyMenu.get(i).getItems().get(i).getCategory(), monthlyMenu.get(i).getItems().get(i).getName(),
-					monthlyMenu.get(i).getItems().get(i).isHealthyChoice(),
-					monthlyMenu.get(i).getItems().get(i).getPrice());
-			// break;
-			// }
-			// System.out.println("The menu is full.");
+		//for (int i = 0; i < monthlyMenu.get(i).getNumberOfItems(); i++) {
+			//if (monthlyMenu.size() <= monthlyMenu.get(i).getNumberOfItems()) {
+				for (int i = 0; i < monthlyMenu.size(); i++) {
+					if(monthlyMenu.get(i).getItems().get(i).getCategory() != null) {
+					// while (monthlyMenu.size() <= monthlyMenu.get(i).getNumberOfItems()) {
+					output += String.format("%-47s %-15s %-10s %-10b %-10.2f\n", monthlyMenu.get(i).toString(),
+							monthlyMenu.get(i).getItems().get(i).getCategory(),
+							monthlyMenu.get(i).getItems().get(i).getName(),
+							monthlyMenu.get(i).getItems().get(i).isHealthyChoice(),
+							monthlyMenu.get(i).getItems().get(i).getPrice() );
+					// break;
+					
+				}else {
+				 System.out.println("The menu is full.");
+				}
 		}
-		// }
-		return output;
-	}
+				return output;
+				}
+		
 
 	public static void inputDeleteMenu(ArrayList<Menu> monthlyMenu) {
 		boolean isDeleted = false;
