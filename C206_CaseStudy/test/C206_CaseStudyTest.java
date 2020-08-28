@@ -25,7 +25,7 @@ public class C206_CaseStudyTest {
 		billList = new ArrayList<Bill>();
 		menuItemList = new ArrayList<MenuItem>();
 		monthlyMenu = new ArrayList<Menu>();
-		
+
 		mi1 = new MenuItem("Western", "Fries", false, 3.0);
 		mi2 = new MenuItem("Vegetarian", "Cabbage", true, 1.5);
 		menuItemList.add(mi1);
@@ -121,9 +121,14 @@ public class C206_CaseStudyTest {
 		duplicate = C206_CaseStudy.createMenu(monthlyMenu, mm1);
 		assertFalse("Test if duplicate menu cannot to create", duplicate);
 
+		// Test that the month is valid
+		C206_CaseStudy.updateMenu(monthlyMenu);
+		int month = monthlyMenu.get(0).getMonth();
+		assertTrue(month >= 1 && month <= 12);
+
 		// check the category -boundary
 		C206_CaseStudy.createMenu(monthlyMenu, mm1);
-			assertEquals("Check that menu has different category", mm1.getItems().get(0).getCategory(), "Western");
+		assertEquals("Check that menu has different category", mm1.getItems().get(0).getCategory(), "Western");
 	}
 
 	@Test
@@ -134,14 +139,13 @@ public class C206_CaseStudyTest {
 
 		// test the monthly menu are correct - normal
 
-		//C206_CaseStudy.createMenu(monthlyMenu, mm1);
 		C206_CaseStudy.createMenu(monthlyMenu, mm2);
 		String allMonthlyMenu = C206_CaseStudy.retrieveAllMonthlyMenu(monthlyMenu);
 
-		output += String.format("%-20s %-10s %-15s %-15s %-10s %-10b -10f\n", "July Menu", "7", "1",
-			"Western", "Fries", false, 3.0);
-		output += String.format("%-20s %-10s %-15s %-15s %-10s %-10b -10f\n", "August Menu", "8", "2",
-				"Vegetarian", "Cabbage", true, 1.5);
+		output += String.format("%-20s %-10s %-15s %-15s %-10s %-10b %-10.2f\n", "July Menu", "7", "1", "Western", "Fries",
+				false, 3.0);
+		output += String.format("%-20s %-10s %-15s %-15s %-10s %-10b %-10.2f\n", "August Menu", "8", "2", "Vegetarian",
+				"Cabbage", true, 1.5);
 
 		assertEquals("Test that ViewAllMenuItem works", output, allMonthlyMenu);
 	}
@@ -149,9 +153,22 @@ public class C206_CaseStudyTest {
 	@Test
 
 	public void testUpdateMenu() {
-		boolean valid = false;
-		C206_CaseStudy.inputCreateMenu(monthlyMenu);
+		// Create a menu and test
+		C206_CaseStudy.createMenu(monthlyMenu, mm1);
+		assertSame("Check that menu is existing", mm1, monthlyMenu.get(0));
 
+		// Test that display name has been updated
+		C206_CaseStudy.updateMenu(monthlyMenu);
+		assertEquals("Check that display name has been updated", monthlyMenu.get(0).getDisplayName(), "August Menu");
+
+		// Test that the month is valid
+		C206_CaseStudy.updateMenu(monthlyMenu);
+		int month = monthlyMenu.get(0).getMonth();
+		assertTrue(month >= 1 && month <= 12);
+
+		// Test that month has been updated
+		C206_CaseStudy.updateMenu(monthlyMenu);
+		assertEquals("Check that month has been updated", monthlyMenu.get(0).getMonth(), 8);
 	}
 
 	@Test

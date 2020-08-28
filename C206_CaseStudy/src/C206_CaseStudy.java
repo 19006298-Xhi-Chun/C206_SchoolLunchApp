@@ -299,32 +299,34 @@ public class C206_CaseStudy {
 
 		String listItem = String.format("%-20s %-20s %-10s %s\n", "Western", "Fries", "false", "3.0");
 		listItem += String.format("%-20s %-20s %-10s %s\n", "Vegetarian", "Cabbage", "true", "1.5");
+		listItem += String.format("%-20s %-20s %-10s %s\n", "Asian", "Curry Noodles", "false", "3.5");
 		System.out.println(listItem);
 		menuItemList.add(new MenuItem("Western", "Fries", false, 3.0));
 		menuItemList.add(new MenuItem("Vegetarian", "Cabbage", true, 1.5));
-		// for (int n = 0; n <= numOfItems; n++) {
-		// String choose = Helper.readString("Choose item to add > ");
-		// for (int i = 0; i < menuItemList.size(); i++) {
-		while (monthlyMenu.size() <= numOfItems) {
-			Random num = new Random();
-			int numItems = num.nextInt(menuItemList.size());
-			String name = menuItemList.get(numItems).getName();
-			// if (!name.equalsIgnoreCase(menuItemList.get(n).getName())) {
-			// refactoring
-			String category = menuItemList.get(numItems).getCategory();
-			boolean healthyChoice = menuItemList.get(numItems).isHealthyChoice();
-			double price = menuItemList.get(numItems).getPrice();
-			ArrayList<MenuItem> items = new ArrayList<MenuItem>();
-			items.add(new MenuItem(name, category, healthyChoice, price));
-			Menu mm = new Menu(displayName, month, numOfItems, items);
-			monthlyMenu.add(mm);
-			isCreate = true;
-			break;
-			// } //else {
-			// numItems = num.nextInt(menuItemList.size());
-			// }
+		menuItemList.add(new MenuItem("Asian", "Curry Noodles", false, 3.5));
+
+		if (numOfItems <= menuItemList.size()) {
+			while (monthlyMenu.size() <= numOfItems) {
+				Random num = new Random();
+				int numItems = num.nextInt(menuItemList.size());
+				// refactoring
+				String name = menuItemList.get(numItems).getName();
+				String category = menuItemList.get(numItems).getCategory();
+				boolean healthyChoice = menuItemList.get(numItems).isHealthyChoice();
+				double price = menuItemList.get(numItems).getPrice();
+				
+				ArrayList<MenuItem> items = new ArrayList<MenuItem>();
+				items.add(new MenuItem(name, category, healthyChoice, price));
+				Menu mm = new Menu(displayName, month, numOfItems, items);
+				monthlyMenu.add(mm);
+				isCreate = true;
+				break;
+			}
+
+		} else {
+			System.out.println("The menu is full");
+
 		}
-		// }
 		if (isCreate == true) {
 			System.out.println("Menu created!");
 		} else {
@@ -336,8 +338,11 @@ public class C206_CaseStudy {
 	public static boolean createMenu(ArrayList<Menu> monthlyMenu, Menu mm) {
 
 		for (int i = 0; i < monthlyMenu.get(i).getNumberOfItems(); i++) {
+			//refactoring
 			String displayName = mm.getDisplayName();
-			if (monthlyMenu.get(i).getDisplayName().equalsIgnoreCase(displayName)) {
+			String menuDisplayName = monthlyMenu.get(i).getDisplayName();
+			
+			if (menuDisplayName.equalsIgnoreCase(displayName)) {
 				System.out.println("Cannot have duplicate name of menu!");
 				return false;
 			}
@@ -363,7 +368,9 @@ public class C206_CaseStudy {
 	public static void updateMenu(ArrayList<Menu> monthlyMenu) {
 		String displayName = Helper.readString("Enter the display name of menu > ");
 		for (int i = 0; i < monthlyMenu.size(); i++) {
-			if (monthlyMenu.get(i).getDisplayName().equalsIgnoreCase(displayName)) {
+			String menuDisplayName = monthlyMenu.get(i).getDisplayName();
+			
+			if (menuDisplayName.equalsIgnoreCase(displayName)) {
 				monthlyMenu.get(i).getItems();
 				String newDisplayName = Helper.readString("Enter the new display name of menu > ");
 				int newMonth = Helper.readInt("Enter the new month of menu > ");
@@ -371,8 +378,12 @@ public class C206_CaseStudy {
 					System.out.println("Invalid month");
 					newMonth = Helper.readInt("Enter the new month of menu > ");
 				}
-				Menu mm = new Menu(newDisplayName, newMonth, monthlyMenu.get(i).getNumberOfItems(),
-						monthlyMenu.get(i).getItems());
+				//refactoring
+				int numberOfItems = monthlyMenu.get(i).getNumberOfItems();
+				ArrayList<MenuItem> items = monthlyMenu.get(i).getItems();
+				
+				Menu mm = new Menu(newDisplayName, newMonth, numberOfItems,
+						items);
 				monthlyMenu.set(i, mm);
 				System.out.println("Menu successfully updated.");
 
@@ -385,25 +396,18 @@ public class C206_CaseStudy {
 
 	public static String retrieveAllMonthlyMenu(ArrayList<Menu> monthlyMenu) {
 		String output = "";
-		//for (int i = 0; i < monthlyMenu.get(i).getNumberOfItems(); i++) {
-			//if (monthlyMenu.size() <= monthlyMenu.get(i).getNumberOfItems()) {
-				for (int i = 0; i < monthlyMenu.size(); i++) {
-					if(monthlyMenu.get(i).getItems().get(i).getCategory() != null) {
-					// while (monthlyMenu.size() <= monthlyMenu.get(i).getNumberOfItems()) {
-					output += String.format("%-47s %-15s %-10s %-10b %-10.2f\n", monthlyMenu.get(i).toString(),
-							monthlyMenu.get(i).getItems().get(i).getCategory(),
-							monthlyMenu.get(i).getItems().get(i).getName(),
-							monthlyMenu.get(i).getItems().get(i).isHealthyChoice(),
-							monthlyMenu.get(i).getItems().get(i).getPrice() );
-					// break;
-					
-				}else {
-				 System.out.println("The menu is full.");
-				}
+		for (int i = 0; i < monthlyMenu.size(); i++) {
+			//refactoring
+			String category = monthlyMenu.get(i).getItems().get(i).getCategory();
+			String name = monthlyMenu.get(i).getItems().get(i).getName();
+			boolean healthyChoice = monthlyMenu.get(i).getItems().get(i).isHealthyChoice();
+			double price = monthlyMenu.get(i).getItems().get(i).getPrice();
+			
+			output += String.format("%-47s %-15s %-10s %-10b %-10.2f\n", monthlyMenu.get(i).toString(),
+					category, name, healthyChoice, price);
 		}
-				return output;
-				}
-		
+		return output;
+	}
 
 	public static void inputDeleteMenu(ArrayList<Menu> monthlyMenu) {
 		boolean isDeleted = false;
@@ -429,8 +433,10 @@ public class C206_CaseStudy {
 
 	public static boolean deleteMenu(ArrayList<Menu> monthlyMenu, Menu mm) {
 		for (int i = 0; i < monthlyMenu.size(); i++) {
+			//refactoring
 			String displayName = mm.getDisplayName();
-			if (monthlyMenu.get(i).getDisplayName().equalsIgnoreCase(displayName)) {
+			String menuDisplayName = monthlyMenu.get(i).getDisplayName();
+			if (menuDisplayName.equalsIgnoreCase(displayName)) {
 				monthlyMenu.remove(i);
 				return true;
 			}
