@@ -63,6 +63,7 @@ public class MenuItem
 	
 	public String toString()
 	{
-		return null;
+		String output = String.format("%-20s %-20s %-10s %s\n", name, category, price, healthyChoice);
+		return output;
 	}
 }

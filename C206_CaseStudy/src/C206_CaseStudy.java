@@ -357,11 +357,7 @@ public class C206_CaseStudy {
 		{
 			if(menuItemList.get(i).getCategory().equals("asian"))
 			{
-				String name = menuItemList.get(i).getName();
-				String category = menuItemList.get(i).getCategory();
-				String price = String.valueOf(menuItemList.get(i).getPrice());
-				String healthyChoice = menuItemList.get(i).isHealthyChoice() ? "true" : "false";
-				output += String.format("%-20s %-20s %-10s %s\n", name, category, price, healthyChoice);
+				output += menuItemList.get(i).toString();
 			}
 		}
 		
@@ -369,11 +365,7 @@ public class C206_CaseStudy {
 		{
 			if(menuItemList.get(i).getCategory().equals("vegetarian"))
 			{
-				String name = menuItemList.get(i).getName();
-				String category = menuItemList.get(i).getCategory();
-				String price = String.valueOf(menuItemList.get(i).getPrice());
-				String healthyChoice = menuItemList.get(i).isHealthyChoice() ? "true" : "false";
-				output += String.format("%-20s %-20s %-10s %s\n", name, category, price, healthyChoice);
+				output += menuItemList.get(i).toString();
 			}
 		}
 		
@@ -381,11 +373,7 @@ public class C206_CaseStudy {
 		{
 			if(menuItemList.get(i).getCategory().equals("western"))
 			{
-				String name = menuItemList.get(i).getName();
-				String category = menuItemList.get(i).getCategory();
-				String price = String.valueOf(menuItemList.get(i).getPrice());
-				String healthyChoice = menuItemList.get(i).isHealthyChoice() ? "true" : "false";
-				output += String.format("%-20s %-20s %-10s %s\n", name, category, price, healthyChoice);
+				output += menuItemList.get(i).toString();
 			}
 		}
 		return output;
@@ -418,10 +406,7 @@ public class C206_CaseStudy {
 			if (menuItemList.get(i).getName().equalsIgnoreCase(name))
 			{
 				System.out.println(String.format("%-20s %-20s %-10s %s\n", "Name", "Category", "Price", "Healthy Choice"));
-				String category = menuItemList.get(i).getCategory();
-				String price = String.valueOf(menuItemList.get(i).getPrice());
-				String healthyChoice = menuItemList.get(i).isHealthyChoice() ? "true" : "false";
-				System.out.println(String.format("%-20s %-20s %-10s %s\n", name, category, price, healthyChoice));
+				menuItemList.get(i).toString();
 				return true;
 			}
 		}
