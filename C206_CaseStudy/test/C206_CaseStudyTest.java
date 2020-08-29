@@ -250,6 +250,15 @@ public class C206_CaseStudyTest {
 		deleteBill = C206_CaseStudy.deleteBill(bill);
 		assertTrue("Test if an existing menu can be deleted", deleteBill);
 	}
+	@Test
+	public void testUpdateBill() {
+		// test that the system can update the existing menu
+
+
+		C206_CaseStudy.createBill(billList);
+		updateBill = C206_CaseStudy.deleteBill(bill);
+		assertTrue("Test if an existing menu can be deleted", updateBill);
+	}
 
 	@After
 	public void tearDown() throws Exception {
