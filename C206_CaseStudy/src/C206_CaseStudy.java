@@ -785,7 +785,7 @@ public class C206_CaseStudy {
 				totalAmount = Helper.readDouble("Please enter the new amount> ");
 			}
 			
-			boolean flag = Helper.readBoolean("Please enter paid flag (true/flase)");
+			boolean flag = Helper.readBoolean("Please enter paid flag (true/false)");
 			
 			//Updating of bill
 			billList.get(index_Of_Payee).updateBill(totalAmount, flag);
