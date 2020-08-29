@@ -26,10 +26,8 @@ public class C206_CaseStudyTest {
 		menuItemList = new ArrayList<MenuItem>();
 		monthlyMenu = new ArrayList<Menu>();
 
-		mi1 = new MenuItem("Western", "Fries", false, 3.0);
-		mi2 = new MenuItem("Vegetarian", "Cabbage", true, 1.5);
-		menuItemList.add(mi1);
-		menuItemList.add(mi2);
+		mi1 = new MenuItem("western", "Fries", false, 3.0);
+		mi2 = new MenuItem("vegetarian", "Cabbage", true, 1.5);
 
 		mm1 = new Menu("July Menu", 7, 1, menuItemList);
 		mm2 = new Menu("August Menu", 8, 2, menuItemList);
@@ -37,12 +35,13 @@ public class C206_CaseStudyTest {
 		monthlyMenu.add(mm1);
 		monthlyMenu.add(mm2);
 		b1 = new Bill("Verzon", 123.0, "20201231");
-
 	}
 
 	@Test
 	public void testAddMenuItem() {
 		// Done by Wen Ning
+		
+		boolean ok;
 
 		// Given an empty list, after adding 1 item, item should be the same as first
 		// item of the list -normal
@@ -50,8 +49,6 @@ public class C206_CaseStudyTest {
 		assertSame("Check that item is added", mi1, menuItemList.get(0));
 
 		// test if duplicate item is added -error
-		boolean ok;
-
 		ok = C206_CaseStudy.addMenuItem(menuItemList, mi1);
 		assertFalse("Test if duplicate item is NOT ok to add", ok);
 
@@ -63,11 +60,17 @@ public class C206_CaseStudyTest {
 		MenuItem miTest = new MenuItem("", testName, false, 0);
 		ok = C206_CaseStudy.addMenuItem(menuItemList, miTest);
 		assertFalse("Test if name longer than 20 is not added", ok);
+		
+		// test if item price is more than 0 -boundary
+		ok = C206_CaseStudy.addMenuItem(menuItemList, miTest);
+		assertFalse("Test if item price is less than or equal to 0 is not added", ok);
 	}
 
 	@Test
-	public void testViewAllMenuItem() {
+	public void testViewMenuItem() {
 		// Done by Wen Ning
+		
+		boolean ok = false;
 
 		// test if item list is empty, not null -boundary
 		assertNotNull("Test is there is a valid menuItemList to retrieve from", menuItemList);
@@ -82,31 +85,62 @@ public class C206_CaseStudyTest {
 		C206_CaseStudy.addMenuItem(menuItemList, mi2);
 		String allMenuItem = C206_CaseStudy.retrieveAllMenuItem(menuItemList);
 
-		testOutput = String.format("%-20s %-20s %-10s %s\n", "Fries", "Western", "3.0", "false");
-		testOutput += String.format("%-20s %-20s %-10s %s\n", "Cabbage", "Vegetarian", "1.5", "true");
+		testOutput = String.format("%-20s %-20s %-10s %s\n", "Cabbage", "vegetarian", "1.5", "true");
+		testOutput += String.format("%-20s %-20s %-10s %s\n", "Fries", "western", "3.0", "false");
 
 		assertEquals("Test that ViewAllMenuItem works", testOutput, allMenuItem);
+		
+		// test if empty category is skipped -normal
+		ok = allMenuItem.contains("asian");
+		assertFalse("Test if asian category is now shown", ok);
+		
+		// test if a non-existing item can not be searched -error
+		ok = C206_CaseStudy.searchMenuItem(menuItemList, "Watermelon");
+		assertFalse("Test if a non-existing item is NOT ok to search", ok);
 	}
 
 	@Test
 	public void testDeleteMenuItem() {
 		// Done by Wen Ning
 
-		// test if item can be deleted after being added -normal
 		boolean ok;
-
+		
+		// test if item can be deleted after being added -normal
 		C206_CaseStudy.addMenuItem(menuItemList, mi1);
-		ok = C206_CaseStudy.deleteMenuItem(menuItemList, mi1);
+		ok = C206_CaseStudy.deleteMenuItem(menuItemList, mi1.getName());
 		assertTrue("Test if an existing item can be deleted", ok);
 
 		// test if a non-existing item can not be deleted -error
-		ok = C206_CaseStudy.deleteMenuItem(menuItemList, mi2);
+		ok = C206_CaseStudy.deleteMenuItem(menuItemList, mi2.getName());
 		assertFalse("Test if a non-existing item is NOT ok to delete", ok);
 
-		// test if an empty item can not be deleted -error
+		// test if an empty item name can not be deleted -error
 		MenuItem miTest = new MenuItem("", "", false, 0);
-		ok = C206_CaseStudy.deleteMenuItem(menuItemList, miTest);
-		assertFalse("Test if an item is NOT ok to delete", ok);
+		ok = C206_CaseStudy.deleteMenuItem(menuItemList, miTest.getName());
+		assertFalse("Test if an empty item name is NOT ok to delete", ok);
+	}
+	
+	@Test
+	public void testUpdateMenuItem()
+	{
+		//Done by Wen Ning
+		
+		boolean ok = false;
+		
+		// test if item can be updated after being added -normal
+		C206_CaseStudy.addMenuItem(menuItemList, mi1);
+		MenuItem miTest = new MenuItem("western", "Fries", false, 4.0);
+		ok = C206_CaseStudy.updateMenuItem(menuItemList, miTest);
+		assertTrue("Test if an existing item can be updated", ok);
+		
+		// test if a non-existing item can not be updated -error
+		ok = C206_CaseStudy.updateMenuItem(menuItemList, mi2);
+		assertFalse("Test if a non-existing item is NOT ok to update", ok);
+		
+		// test if an empty item name can not be updated -error
+		MenuItem miTest2 = new MenuItem("", "", false, 0);
+		ok = C206_CaseStudy.updateMenuItem(menuItemList, miTest2);
+		assertFalse("Test if an empty item name is NOT ok to update", ok);
 	}
 
 	// monthly menu
