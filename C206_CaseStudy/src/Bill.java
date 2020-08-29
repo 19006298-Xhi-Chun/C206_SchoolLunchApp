@@ -53,11 +53,17 @@ public class Bill {
 	}
 	
 	public String toString() {
+		String flag = Boolean.toString(paid);
 		String convert = Double.toString(totalAmount);
-		String output = String.format("%-20s %-20s %-20s", payee, convert, dueDate);
+		String output = String.format("%-20s %-20s %-20s %-10s", payee, convert, dueDate,flag);
 		return output;
 	}
 	
+	public void updateBill(double totalAmount, boolean flag) {
+		this.totalAmount = totalAmount;
+		this.paid = flag;
+	
+	}
 	
 	
 	
