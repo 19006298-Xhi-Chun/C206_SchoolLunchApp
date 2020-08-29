@@ -63,7 +63,11 @@ public class C206_CaseStudy {
 					viewBill(billList);
 				} else if (num == 3) {
 					deleteBill(billList);
-				} else {
+				} 
+				else if (num == 4) {
+					updateBill(billList);
+				}
+				else {
 					System.out.println("Invalid option.");
 				}
 
@@ -450,17 +454,41 @@ public class C206_CaseStudy {
 	// Done by verzon
 
 	public static void createBill(ArrayList<Bill> billList) {
+		
+		
 		String payee = Helper.readString("Enter the name of payee > ");
-		Double totalAmount = Helper.readDouble("Enter the total amount > ");
 		String dueDate = Helper.readString("Enter the due date > ");
-
+		
+		Double totalAmount = 0.0;
+		
+		while(totalAmount<=0) {
+		totalAmount = Helper.readDouble("Enter the total amount > ");
+		if (totalAmount > 0) {
+			break;
+		}
+		
+		System.out.println("Please enter a valid amount that is greater than 0");
+		}
 		Bill bill = new Bill(payee, totalAmount, dueDate);
+		bill.setPaid(false);
 		billList.add(bill);
 	}
 
 	public static void deleteBill(ArrayList<Bill> billList) {
 		System.out.println("=====Displaying bill items, select the S/N to delete=====");
-		viewBill(billList);
+		
+		//displaying of the bill
+		
+		int serialNumber = 1;
+		System.out.println(String.format("%-5s %-20s %-20s %-20s %-10s", "S/N", "Payee", "TotalAmount", "DueDate","Paid flag"));
+		for (Bill x : billList) {
+
+			String output = String.format("%-5s ", Integer.toString(serialNumber));
+			output = output + x.toString();
+			System.out.println(output);
+			serialNumber++;
+		}
+		
 		int num = Helper.readInt("Which S/N of the item you wish to delete? > ");
 
 		billList.remove(num - 1);
@@ -468,14 +496,97 @@ public class C206_CaseStudy {
 
 	public static void viewBill(ArrayList<Bill> billList) {
 		int serialNumber = 1;
-		System.out.println(String.format("%-5s %-20s %-20s %-20s", "S/N", "Payee", "TotalAmount", "DueDate"));
+		System.out.println(String.format("%-5s %-20s %-20s %-20s %-10s", "S/N", "Payee", "TotalAmount", "DueDate","Paid flag"));
 		for (Bill x : billList) {
 
-			String output = String.format("%-5s", Integer.toString(serialNumber));
+			String output = String.format("%-5s ", Integer.toString(serialNumber));
 			output = output + x.toString();
 			System.out.println(output);
 			serialNumber++;
 		}
+		
+		//If list is too long we enable user to search by payee
+		System.out.println("If you wish to search for a payee by name, please enter his name. To quit press 2.");
+		
+		String choice = "0";
+		while(!(choice.equals("2") ) ) {
+			
+			choice = Helper.readString("Please Enter Name of payee");
+			
+			//To check if payee was found
+			int count = 0;
+			for (Bill x : billList) {
+
+				if(choice.equalsIgnoreCase(x.getPayee())) {
+					System.out.println(String.format("%-20s %-20s %-20s %-10s", "Payee", "TotalAmount", "DueDate","paid flag"));
+					String output = x.toString();
+					System.out.println(output);
+					count = 1;
+
+				}
+				
+				
+			}
+			if(count == 0 ) {
+				 System.out.println("Payee not found. Please try again. ");
+			}
+		}
+		
+	}
+	public static void updateBill(ArrayList<Bill> billList) {
+		//Prompt user to determine whether partial payment or full payment is intended.
+		System.out.println("For payment of full amount press 1");
+		System.out.println("For partial payment press 2");
+
+		int payment_choice = Helper.readInt("Please enter your choice > ");
+
+	
+		
+		//prompt user for input
+		String search = Helper.readString("Please enter the name of the payee > ");
+		
+		//set a variable to see if the payee was found
+		int found = 0;
+		
+		int index_Of_Payee = 0 ;
+		
+		//First for loop: iterate through all bills
+		for (int i =0; i<billList.size();i++) {
+			//Identify the payee within the bill List
+			if(billList.get(i).getPayee().equalsIgnoreCase(search)) {
+				//If this code is run, means payee was found. Assume no repeat in name.
+				found = 1;
+				index_Of_Payee = i;
+				break;
+			}
+			
+		}
+		
+		
+		if(found == 1) {
+		if (payment_choice == 1 ) {
+			billList.get(index_Of_Payee).updateBill(0.00 , true );
+		}
+		
+		else if(payment_choice == 2) {
+			double totalAmount = Helper.readDouble("Enter the total amount > ");
+			
+			while(totalAmount <= 0 ) {
+				System.out.println("Invalid amount. Please ensure amount is greater than 0.");
+				totalAmount = Helper.readDouble("Please enter the new amount> ");
+			}
+			
+			boolean flag = Helper.readBoolean("Please enter paid flag (true/flase)");
+			
+			//Updating of bill
+			billList.get(index_Of_Payee).updateBill(totalAmount, flag);
+			System.out.println("Update successful");
+		}
+		}
+		else {
+			System.out.println("Payee not found");
+		}
+		
 	}
 
 }
