@@ -227,7 +227,7 @@ public class C206_CaseStudyTest {
 		assertFalse("Test if an item cannot be deleted", canDelete);
 	}
 
-	// verzon
+	// Verzon
 	@Test
 	public void testCreateBill() {
 		// check the menu is able to be created

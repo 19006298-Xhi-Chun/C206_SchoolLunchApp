@@ -554,7 +554,6 @@ public class C206_CaseStudy {
 
 		} else {
 			System.out.println("The menu is full");
-
 		}
 		if (isCreate == true) {
 			System.out.println("Menu created!");
