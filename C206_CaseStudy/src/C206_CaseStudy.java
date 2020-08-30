@@ -6,6 +6,7 @@ public class C206_CaseStudy {
 	private static ArrayList<Menu> monthlyMenu = new ArrayList<Menu>();
 	private static ArrayList<MenuItem> menuItemList = new ArrayList<MenuItem>();
 	private static ArrayList<Bill> billList = new ArrayList<Bill>();
+	
 
 	public static void main(String[] args) {
 
