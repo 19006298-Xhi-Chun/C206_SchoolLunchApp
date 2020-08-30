@@ -534,7 +534,6 @@ public class C206_CaseStudy {
 				isCreate = true;
 				break;
 			}
-
 		} else {
 			System.out.println("The menu is full");
 		}

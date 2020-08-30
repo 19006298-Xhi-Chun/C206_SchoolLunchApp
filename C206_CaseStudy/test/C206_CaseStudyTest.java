@@ -206,7 +206,6 @@ public class C206_CaseStudyTest {
 		@Test
 		public void testUpdateMenu() {
 			boolean canUpdate = false;
-			
 			// test if menu can be updated -normal
 			C206_CaseStudy.createMenu(monthlyMenu, mm1);
 			Menu mmTest = new Menu("July Menu", 7, 1, menuItemList);
