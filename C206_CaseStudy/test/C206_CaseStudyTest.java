@@ -336,7 +336,7 @@ public class C206_CaseStudyTest {
 
     @Test
     //Xhi Chun
-    public void updateOrderTest() {
+    public void updateOrderDateTest() {
         // OrderList not null, able add new orders - boundary
         if (orderList.isEmpty()) {
             assertFalse(false);
@@ -366,7 +366,7 @@ public class C206_CaseStudyTest {
 
     @Test
     //Xhi Chun
-    public void SearchOrderTest() {
+    public void SearchStudentIdTest() {
         // OrderList not empty, able search for the ID - boundary
         if (orderList.size() > 0) {
             assertTrue(true);
@@ -391,19 +391,18 @@ public class C206_CaseStudyTest {
     }
     @Test
     //Xhi CHun
-    public void CreateOrderTest() {
+    public void AddOrderTest() {
         // OrderList not null, order can be added - Normal
-        assertNotNull("Check valid order arraylist to add ", orderList);
-        // Order List is empty list, after adding 1 item, the size of the list is 1 -
-        // Normal
-        ArrayList<MenuItem> x= new ArrayList<MenuItem>();
-        x.add(new MenuItem("Asian", "Chicken rice", true, 5.00));
+        assertNull("Check valid order arraylist to add ", orderList);
+        // Order List is empty list, after adding 1 item, the size of the list is 1 - normal)
+     
+        menuItemList.add(new MenuItem("Asian", "Chicken rice", true, 5.00));
         ArrayList<Order> orderList = new ArrayList<Order>();
-        orderList.add(new Order("19000000", "2020-01-1", x.toString()));
+        orderList.add(new Order("19000000", "2020-01-1", menuItemList.toString()));
         assertEquals("Check that order List size is 1", 1, orderList.size());
         assertTrue(true);
         // Same Order can't be added again - error
-        orderList.add(new Order("19000000", "2020-01-1", x.toString()));
+        orderList.add(new Order("19000000", "2020-01-1", menuItemList.toString()));
         for (int i = 0; i < orderList.size(); i++) {
             if (orderList.get(i).getStudentId().equals("19000000")
                     && orderList.get(i).getOrderDate().equals("2020-01-1")) {
@@ -411,14 +410,20 @@ public class C206_CaseStudyTest {
             }
         }
         // Given that list is not empty display the total amount of orders - normal
-        if (orderList.size() > 0) {
-            assertTrue(true);
-        }
+        
+        boolean notEmpty = orderList.isEmpty();
+        assertFalse("Check if the list is not empty",notEmpty);
+        
         // Given that list is empty and the total amount should be 0 and not other
         // amount -error
-        if (orderList.size() == 0) {
-            assertEquals(0, orderList);
-        }
+       orderList.clear();
+       boolean isEmpty = orderList.isEmpty();
+       assertTrue("Verfy that oderList is emtpy",isEmpty);
+   
+       double total = mi1.getPrice();
+       double expected = 0;
+       assertSame("verify that total price and the expected price == 0",total,expected);
+       
         // Given that list has 1 order but display 2 - error
         if (orderList.size() > 0) {
             assertFalse(false);
