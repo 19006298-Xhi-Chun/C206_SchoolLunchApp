@@ -130,16 +130,16 @@ public class C206_CaseStudyTest {
 		// test if item can be updated after being added -normal
 		C206_CaseStudy.addMenuItem(menuItemList, mi1);
 		MenuItem miTest = new MenuItem("western", "Fries", false, 4.0);
-		ok = C206_CaseStudy.updateMenuItem(menuItemList, miTest);
+		ok = C206_CaseStudy.updateMenuItem(menuItemList, miTest, "Burger");
 		assertTrue("Test if an existing item can be updated", ok);
 		
 		// test if a non-existing item can not be updated -error
-		ok = C206_CaseStudy.updateMenuItem(menuItemList, mi2);
+		ok = C206_CaseStudy.updateMenuItem(menuItemList, mi2, "Burger");
 		assertFalse("Test if a non-existing item is NOT ok to update", ok);
 		
 		// test if an empty item name can not be updated -error
 		MenuItem miTest2 = new MenuItem("", "", false, 0);
-		ok = C206_CaseStudy.updateMenuItem(menuItemList, miTest2);
+		ok = C206_CaseStudy.updateMenuItem(menuItemList, miTest2, "Burger");
 		assertFalse("Test if an empty item name is NOT ok to update", ok);
 	}
 

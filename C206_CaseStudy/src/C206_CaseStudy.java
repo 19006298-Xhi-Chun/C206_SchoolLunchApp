@@ -86,7 +86,10 @@ public class C206_CaseStudy {
 				}
 				else if (num == 4)
 				{
-					
+					if (loginAdmin(AccountList))
+					{
+						inputUpdateMenuItem(menuItemList);
+					}
 				}
 				else 
 				{
@@ -161,8 +164,6 @@ public class C206_CaseStudy {
 		System.out.println("2. View");
 		System.out.println("3. Delete");
 		System.out.println("4. Update");
-		System.out.println();
-
 	}
 
 	public static boolean loginAdmin(ArrayList<Account> AccountList) {
@@ -289,303 +290,291 @@ public class C206_CaseStudy {
 
 	// ----------------------------Option 2----------------------------
 
-	public static void inputAddMenuItem(ArrayList<MenuItem> menuItemList) 
-	{
-		// Done by Wen Ning
-		
-		boolean isAdded = false;
+	    public static void inputAddMenuItem(ArrayList<MenuItem> menuItemList) 
+		{
+			// Done by Wen Ning
+			
+			boolean isAdded = false;
 
-		String name = Helper.readString("Enter name of item to add > ").trim();
-		String category = Helper.readString("Enter category of item > ").trim().toLowerCase();
-		double price = Helper.readDouble("Enter price of item > $");
-		String choice = Helper.readString("Is this menu item healthy? (Y/N) > ").trim();
-		boolean healthyChoice = false;
+			String name = Helper.readString("Enter name of item to add > ").trim();
+			String category = Helper.readString("Enter category of item > ").trim().toLowerCase();
+			double price = Helper.readDouble("Enter price of item > $");
+			String choice = Helper.readString("Is this menu item healthy? (Y/N) > ").trim();
+			boolean healthyChoice = false;
 
-		if (choice.equalsIgnoreCase("Y")) 
-		{
-			healthyChoice = true;
-		} 
-		else if (choice.equalsIgnoreCase("N")) 
-		{
-			healthyChoice = false;
-		} 
-		else 
-		{
-			System.out.println("Invalid choice!");
-		}
-
-		String confirm = Helper.readString("Are you sure? (Y/N) > ").trim();
-		if (confirm.equalsIgnoreCase("Y")) 
-		{
-			MenuItem mi = new MenuItem(category, name, healthyChoice, price);
-			isAdded = addMenuItem(menuItemList, mi);
-		} 
-		else if (confirm.equalsIgnoreCase("N")) 
-		{
-			System.out.println("Cancelled creation of item!");
-		}
-		else
-		{
-			System.out.println("Invalid choice!");
-		}
-
-		if (isAdded)
-		{
-			System.out.println("Item added!");
-		}
-		else
-		{
-			System.out.println("Item not added!");
-		}
-	}
-
-	public static boolean addMenuItem(ArrayList<MenuItem> menuItemList, MenuItem mi)
-	{
-		// Done by Wen Ning
-
-		if (mi.getName().length() > 20)
-		{
-			System.out.println("Name is too long!");
-			return false;
-		}
-		
-		if (mi.getName().equals(""))
-		{
-			System.out.println("Name of item cannot be empty!");
-			return false;
-		}
-		
-		if (mi.getPrice() <= 0)
-		{
-			System.out.println("Invalid price!");
-			return false;
-		}
-		
-		if (!(mi.getCategory().equals("asian") || mi.getCategory().equals("vegetarian") || mi.getCategory().equals("western")))
-		{
-			System.out.println("Invalid category!");
-			return false;
-		}
-
-		for (int i = 0; i < menuItemList.size(); i++)
-		{
-			if (menuItemList.get(i).getName().equalsIgnoreCase(mi.getName()))
+			if (choice.equalsIgnoreCase("Y")) 
 			{
-				System.out.println("Duplicate item!");
+				healthyChoice = true;
+			} 
+			else if (choice.equalsIgnoreCase("N")) 
+			{
+				healthyChoice = false;
+			} 
+			else 
+			{
+				System.out.println("Invalid choice!");
+			}
+
+			String confirm = Helper.readString("Are you sure? (Y/N) > ").trim();
+			if (confirm.equalsIgnoreCase("Y")) 
+			{
+				MenuItem mi = new MenuItem(category, name, healthyChoice, price);
+				isAdded = addMenuItem(menuItemList, mi);
+			} 
+			else if (confirm.equalsIgnoreCase("N")) 
+			{
+				System.out.println("Cancelled creation of item!");
+			}
+			else
+			{
+				System.out.println("Invalid choice!");
+			}
+
+			if (isAdded)
+			{
+				System.out.println("Item added!");
+			}
+			else
+			{
+				System.out.println("Item not added!");
+			}
+		}
+
+		public static boolean addMenuItem(ArrayList<MenuItem> menuItemList, MenuItem mi)
+		{
+			// Done by Wen Ning
+
+			if (mi.getName().length() > 20)
+			{
+				System.out.println("Name is too long!");
 				return false;
 			}
+			
+			if (mi.getName().equals(""))
+			{
+				System.out.println("Name of item cannot be empty!");
+				return false;
+			}
+			
+			if (mi.getPrice() <= 0)
+			{
+				System.out.println("Invalid price!");
+				return false;
+			}
+			
+			if (!(mi.getCategory().equals("asian") || mi.getCategory().equals("vegetarian") || mi.getCategory().equals("western")))
+			{
+				System.out.println("Invalid category!");
+				return false;
+			}
+
+			for (int i = 0; i < menuItemList.size(); i++)
+			{
+				if (menuItemList.get(i).getName().equalsIgnoreCase(mi.getName()))
+				{
+					System.out.println("Duplicate item!");
+					return false;
+				}
+			}
+			menuItemList.add(mi);
+			return true;
 		}
-		menuItemList.add(mi);
-		return true;
-	}
 
-	public static void inputDeleteMenuItem(ArrayList<MenuItem> menuItemList)
-	{
-		// Done by Wen Ning
-
-		String name = Helper.readString("Enter name of item to delete > ").trim();
-
-		boolean isDeleted = deleteMenuItem(menuItemList, name);
-		if (isDeleted)
+		public static void inputDeleteMenuItem(ArrayList<MenuItem> menuItemList)
 		{
-			System.out.println("Item removed!");
+			// Done by Wen Ning
+
+			String name = Helper.readString("Enter name of item to delete > ").trim();
+
+			boolean isDeleted = deleteMenuItem(menuItemList, name);
+			if (isDeleted)
+			{
+				System.out.println("Item removed!");
+			}
+			else
+			{
+				System.out.println("Item not found!");
+			}
 		}
-		else
+
+		public static boolean deleteMenuItem(ArrayList<MenuItem> menuItemList, String name) 
 		{
+			// Done by Wen Ning
+
+			if(name.equals(""))
+			{
+				System.out.println("Name of item can not be empty!");
+				return false;
+			}
+			
+			for (int i = 0; i < menuItemList.size(); i++)
+			{
+				if (menuItemList.get(i).getName().equalsIgnoreCase(name))
+				{
+					menuItemList.remove(i);
+					return true;
+				}
+			}
+			return false;
+		}
+
+		public static void viewAllMenuItem(ArrayList<MenuItem> menuItemList)
+		{
+			// Done by Wen Ning
+
+			String output = "";
+			output = retrieveAllMenuItem(menuItemList);
+
+			if (!output.equals(""))
+			{
+				System.out.println(String.format("%-20s %-20s %-10s %s", "Name", "Category", "Price", "Healthy Choice"));
+				Helper.line(80, "-");
+				System.out.println(output);
+			} 
+			else 
+			{
+				System.out.println("There are no menu items!");
+			}
+		}
+
+		public static String retrieveAllMenuItem(ArrayList<MenuItem> menuItemList)
+		{
+			// Done by Wen Ning
+
+			String output = "";
+
+			for (int i = 0; i < menuItemList.size(); i++)
+			{
+				if(menuItemList.get(i).getCategory().equals("asian"))
+				{
+					output += menuItemList.get(i).toString();
+				}
+			}
+			
+			for (int i = 0; i < menuItemList.size(); i++)
+			{
+				if(menuItemList.get(i).getCategory().equals("vegetarian"))
+				{
+					output += menuItemList.get(i).toString();
+				}
+			}
+			
+			for (int i = 0; i < menuItemList.size(); i++)
+			{
+				if(menuItemList.get(i).getCategory().equals("western"))
+				{
+					output += menuItemList.get(i).toString();
+				}
+			}
+			return output;
+		}
+		
+		public static void inputSearchMenuItem(ArrayList<MenuItem> menuItemList)
+		{
+			// Done by Wen Ning
+			
+			String name = Helper.readString("Enter item name to search > ").trim();
+			
+			boolean isFound = searchMenuItem(menuItemList, name);
+			if(!isFound)
+			{
+				System.out.println("Item not found!");
+			}
+		}
+		
+		public static boolean searchMenuItem(ArrayList<MenuItem> menuItemList, String name)
+		{
+			// Done by Wen Ning
+			
+			if(name.equals(""))
+			{
+				System.out.println("Name of item cannot be empty!");
+			}
+
+			for (int i = 0; i < menuItemList.size(); i++)
+			{
+				if (menuItemList.get(i).getName().equalsIgnoreCase(name))
+				{
+					System.out.println(String.format("%-20s %-20s %-10s %s\n", "Name", "Category", "Price", "Healthy Choice"));
+					menuItemList.get(i).toString();
+					return true;
+				}
+			}
+			return false;
+		}
+		
+		public static void inputUpdateMenuItem(ArrayList<MenuItem> menuItemList) 
+		{
+			// Done by Wen Ning
+
+			boolean isUpdated = false;
+			
+			String name = Helper.readString("Enter name of item to update > ").trim().toLowerCase();
+			String newName = Helper.readString("Enter updated name of item > ").trim().toLowerCase();
+			double price = Helper.readDouble("Update price of item > $");
+
+			String confirm = Helper.readString("Are you sure? (Y/N) > ").trim();
+			if (confirm.equalsIgnoreCase("Y")) 
+			{
+				MenuItem mi = new MenuItem("asian", name, true, price);
+				isUpdated = updateMenuItem(menuItemList, mi, newName);
+			} 
+			else if (confirm.equalsIgnoreCase("N")) 
+			{
+				System.out.println("Cancelled creation of item!");
+			}
+			else
+			{
+				System.out.println("Invalid choice!");
+			}
+
+			if (isUpdated)
+			{
+				System.out.println("Item updated!");
+			}
+			else
+			{
+				System.out.println("Item not updated!");
+			}
+		}
+
+		public static boolean updateMenuItem(ArrayList<MenuItem> menuItemList, MenuItem mi, String newName)
+		{
+			// Done by Wen Ning
+
+			if (mi.getName().length() > 20)
+			{
+				System.out.println("Name is too long!");
+				return false;
+			}
+			
+			if (mi.getName().equals(""))
+			{
+				System.out.println("Name of item cannot be empty!");
+				return false;
+			}
+			
+			if (mi.getPrice() <= 0)
+			{
+				System.out.println("Invalid price!");
+				return false;
+			}
+
+			for (int i = 0; i < menuItemList.size(); i++)
+			{
+				if (menuItemList.get(i).getName().equalsIgnoreCase(mi.getName()))
+				{
+					mi.setName(newName);
+					mi.setCategory(menuItemList.get(i).getCategory());
+					mi.setHealthyChoice(menuItemList.get(i).isHealthyChoice());
+					menuItemList.remove(i);
+					menuItemList.add(mi);
+					return true;
+				}
+			}
 			System.out.println("Item not found!");
-		}
-	}
-
-	public static boolean deleteMenuItem(ArrayList<MenuItem> menuItemList, String name) 
-	{
-		// Done by Wen Ning
-
-		if(name.equals(""))
-		{
-			System.out.println("Name of item can not be empty!");
 			return false;
 		}
-		
-		for (int i = 0; i < menuItemList.size(); i++)
-		{
-			if (menuItemList.get(i).getName().equalsIgnoreCase(name))
-			{
-				menuItemList.remove(i);
-				return true;
-			}
-		}
-		return false;
-	}
-
-	public static void viewAllMenuItem(ArrayList<MenuItem> menuItemList)
-	{
-		// Done by Wen Ning
-
-		String output = "";
-		output = retrieveAllMenuItem(menuItemList);
-
-		if (!output.equals(""))
-		{
-			System.out.println(String.format("%-20s %-20s %-10s %s\n", "Name", "Category", "Price", "Healthy Choice"));
-			Helper.line(80, "-");
-			System.out.println(output);
-		} 
-		else 
-		{
-			System.out.println("There are no menu items!");
-		}
-	}
-
-	public static String retrieveAllMenuItem(ArrayList<MenuItem> menuItemList)
-	{
-		// Done by Wen Ning
-
-		String output = "";
-
-		for (int i = 0; i < menuItemList.size(); i++)
-		{
-			if(menuItemList.get(i).getCategory().equals("asian"))
-			{
-				output += menuItemList.get(i).toString();
-			}
-		}
-		
-		for (int i = 0; i < menuItemList.size(); i++)
-		{
-			if(menuItemList.get(i).getCategory().equals("vegetarian"))
-			{
-				output += menuItemList.get(i).toString();
-			}
-		}
-		
-		for (int i = 0; i < menuItemList.size(); i++)
-		{
-			if(menuItemList.get(i).getCategory().equals("western"))
-			{
-				output += menuItemList.get(i).toString();
-			}
-		}
-		return output;
-	}
-	
-	public static void inputSearchMenuItem(ArrayList<MenuItem> menuItemList)
-	{
-		// Done by Wen Ning
-		
-		String name = Helper.readString("Enter item name to search > ").trim();
-		
-		boolean isFound = searchMenuItem(menuItemList, name);
-		if(!isFound)
-		{
-			System.out.println("Item not found!");
-		}
-	}
-	
-	public static boolean searchMenuItem(ArrayList<MenuItem> menuItemList, String name)
-	{
-		// Done by Wen Ning
-		
-		if(name.equals(""))
-		{
-			System.out.println("Name of item cannot be empty!");
-		}
-
-		for (int i = 0; i < menuItemList.size(); i++)
-		{
-			if (menuItemList.get(i).getName().equalsIgnoreCase(name))
-			{
-				System.out.println(String.format("%-20s %-20s %-10s %s\n", "Name", "Category", "Price", "Healthy Choice"));
-				menuItemList.get(i).toString();
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	public static void inputUpdateMenuItem(ArrayList<MenuItem> menuItemList) 
-	{
-		// Done by Wen Ning
-
-		boolean isUpdated = false;
-		
-		String name = Helper.readString("Enter name of item to update > ").trim().toLowerCase();
-		String category = Helper.readString("Update category of item > ").trim();
-		double price = Helper.readDouble("Update price of item > $");
-		String choice = Helper.readString("Is this menu item healthy? (Y/N) > ").trim();
-		boolean healthyChoice = false;
-
-		if (choice.equalsIgnoreCase("Y")) 
-		{
-			healthyChoice = true;
-		} 
-		else if (choice.equalsIgnoreCase("N")) 
-		{
-			healthyChoice = false;
-		} 
-		else 
-		{
-			System.out.println("Invalid choice!");
-		}
-
-		String confirm = Helper.readString("Are you sure? (Y/N) > ").trim();
-		if (confirm.equalsIgnoreCase("Y")) 
-		{
-			MenuItem mi = new MenuItem(category, name, healthyChoice, price);
-			isUpdated = updateMenuItem(menuItemList, mi);
-		} 
-		else if (confirm.equalsIgnoreCase("N")) 
-		{
-			System.out.println("Cancelled creation of item!");
-		}
-		else
-		{
-			System.out.println("Invalid choice!");
-		}
-
-		if (isUpdated)
-		{
-			System.out.println("Item updated!");
-		}
-		else
-		{
-			System.out.println("Item not updated!");
-		}
-	}
-
-	public static boolean updateMenuItem(ArrayList<MenuItem> menuItemList, MenuItem mi)
-	{
-		// Done by Wen Ning
-
-		if (mi.getName().length() > 20)
-		{
-			System.out.println("Name is too long!");
-			return false;
-		}
-		
-		if (mi.getName().equals(""))
-		{
-			System.out.println("Name of item cannot be empty!");
-			return false;
-		}
-		
-		if (mi.getPrice() <= 0)
-		{
-			System.out.println("Invalid price!");
-			return false;
-		}
-
-		for (int i = 0; i < menuItemList.size(); i++)
-		{
-			if (menuItemList.get(i).getName().equalsIgnoreCase(mi.getName()))
-			{
-				menuItemList.remove(i);
-				menuItemList.add(mi);
-				return true;
-			}
-		}
-		System.out.println("Item not found!");
-		return false;
-	}
 
 	// ----------------------------Option 5----------------------------
 
