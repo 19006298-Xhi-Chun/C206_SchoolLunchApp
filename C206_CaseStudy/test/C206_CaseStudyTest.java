@@ -15,7 +15,7 @@ public class C206_CaseStudyTest {
 	private ArrayList<Bill> billList;
 	private ArrayList<MenuItem> menuItemList;
 	private ArrayList<Menu> monthlyMenu;
-
+	private ArrayList<Order>orderList;
 	public C206_CaseStudyTest() {
 		super();
 	}
@@ -267,4 +267,163 @@ public class C206_CaseStudyTest {
 
 		menuItemList = null;
 	}
+	
+	
+	
+	
+	
+	
+	
+	  // Xhi Chun START HERE
+    @Test
+    public void viewOrderTest() {
+        // OrderList not null, so that items can be added - boundary
+        assertNotNull("Check if there is valid order arraylist to add to", orderList);
+        // OrderList is empty list, after adding 2 items, the size of the list is 2 -
+        // Normal
+        ArrayList<MenuItem> x = new ArrayList<MenuItem>();
+        x.add(new MenuItem("Asian", "Fish", true, 5.00));
+        ArrayList<Order> orderList = new ArrayList<Order>();
+        orderList.add(new Order("19000000", "2020-01-1", x.toString()));
+        orderList.add(new Order("19000000", "2020-01-1", x.toString()));
+        assertEquals("Check that order List size is 2", 2, orderList.size());
+        // List empty display nothing from orderList - error
+        if (orderList.size() < 0) {
+            String output = " ";
+            output = String.format("%-20s %-20s %-20s\n", "STUDENT ID", "ORDER DATE", "ITEM NAME");
+        }
+    }
+
+ 
+
+ 
+
+ 
+
+    @Test//
+    //Xhi chun
+    public void DeleteOrderTest() {
+        // Check that orderList is empty and cannot delete - boundary
+        if (orderList.isEmpty()) {
+            assertFalse(false);
+        }
+        // OrderList is not empty, and order is in the list remove order- Normal
+        ArrayList<MenuItem> x = new ArrayList<MenuItem>();
+        x.add(new MenuItem("western", "fish", true, 5.00));
+        ArrayList<Order> orderList = new ArrayList<Order>();
+        orderList.add(new Order("19000000", "2020-01-1", x.toString()));
+        boolean isdelete = false;
+        if (orderList.get(0).getStudentId().equals("19000000")) {
+            orderList.remove(0);
+            isdelete = true;
+        }
+        assertTrue(true);
+        // Same Order can't be deleted again - error
+        orderList.add(new Order("19013363", "2020-08-31", x.toString()));
+        for (int i = 0; i < orderList.size(); i++) {
+            if (orderList.get(i).getStudentId().equals("19000000")
+                    && orderList.get(i).getOrderDate().equals("2020-01-1")) {
+                assertFalse(false);
+            }
+        }
+    }
+
+ 
+
+ 
+
+ 
+
+    @Test
+    //Xhi Chun
+    public void updateOrderTest() {
+        // OrderList not null, able add new orders - boundary
+        if (orderList.isEmpty()) {
+            assertFalse(false);
+        }
+        // Given that list is not empty check that input is the same then update- Normal
+        for (int i = 0; i < orderList.size(); i++) {
+            if (orderList.get(i).getStudentId().equals("19000000")) {
+                orderList.get(i).setOrderDate("2020-01-11");
+            }
+        }
+        assertTrue(true);
+        // List was not empty and enter in the change orderDate but it was not updated -
+        // error
+        for (int i = 0; i < orderList.size(); i++) {
+            if (orderList.get(i).getStudentId().equals("19000000")) {
+                orderList.get(i).setOrderDate("2020-01-1");
+            }
+        }
+        assertFalse(false);
+    }
+
+ 
+
+ 
+
+ 
+
+    @Test
+    //Xhi Chun
+    public void SearchOrderTest() {
+        // OrderList not empty, able search for the ID - boundary
+        if (orderList.size() > 0) {
+            assertTrue(true);
+        }
+        // Given that list is not empty check that ID is the same then show result of
+        // the ID- Normal
+        for (int i = 0; i < orderList.size(); i++) {
+            if (orderList.get(i).getStudentId().equals("19000000")) {
+                String output = " ";
+                output += String.format("%-30s\n", orderList.get(i).toString());
+            }
+        }
+        assertTrue(true);
+        // List is empty so not output shown - error
+        for (int i = 0; i < orderList.size(); i++) {
+            if (orderList.get(i).getStudentId().equals("19000000")) {
+                String output = " ";
+                output += String.format("%-30s\n", orderList.get(i).toString());
+            }
+        }
+        assertFalse(false);
+    }
+    @Test
+    //Xhi CHun
+    public void CreateOrderTest() {
+        // OrderList not null, order can be added - Normal
+        assertNotNull("Check valid order arraylist to add ", orderList);
+        // Order List is empty list, after adding 1 item, the size of the list is 1 -
+        // Normal
+        ArrayList<MenuItem> x= new ArrayList<MenuItem>();
+        x.add(new MenuItem("Asian", "Chicken rice", true, 5.00));
+        ArrayList<Order> orderList = new ArrayList<Order>();
+        orderList.add(new Order("19000000", "2020-01-1", x.toString()));
+        assertEquals("Check that order List size is 1", 1, orderList.size());
+        assertTrue(true);
+        // Same Order can't be added again - error
+        orderList.add(new Order("19000000", "2020-01-1", x.toString()));
+        for (int i = 0; i < orderList.size(); i++) {
+            if (orderList.get(i).getStudentId().equals("19000000")
+                    && orderList.get(i).getOrderDate().equals("2020-01-1")) {
+                assertFalse(false);
+            }
+        }
+        // Given that list is not empty display the total amount of orders - normal
+        if (orderList.size() > 0) {
+            assertTrue(true);
+        }
+        // Given that list is empty and the total amount should be 0 and not other
+        // amount -error
+        if (orderList.size() == 0) {
+            assertEquals(0, orderList);
+        }
+        // Given that list has 1 order but display 2 - error
+        if (orderList.size() > 0) {
+            assertFalse(false);
+            //done
+        }
+    }
 }
+

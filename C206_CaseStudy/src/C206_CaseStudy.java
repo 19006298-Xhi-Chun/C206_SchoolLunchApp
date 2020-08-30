@@ -1010,7 +1010,7 @@ public class C206_CaseStudy {
 	            } else {
 	                System.out.println("Student ID Invalid");
 //end of order
-	 
+	
 
 	            }
 	        }
