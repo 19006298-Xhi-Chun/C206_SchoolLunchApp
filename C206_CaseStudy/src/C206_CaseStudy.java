@@ -6,7 +6,7 @@ public class C206_CaseStudy {
 	private static ArrayList<Menu> monthlyMenu = new ArrayList<Menu>();
 	private static ArrayList<MenuItem> menuItemList = new ArrayList<MenuItem>();
 	private static ArrayList<Bill> billList = new ArrayList<Bill>();
-	
+	private static ArrayList<Order> orderList = new ArrayList<Order>();
 
 	public static void main(String[] args) {
 
@@ -78,6 +78,27 @@ public class C206_CaseStudy {
 					System.out.println("Invalid option.");
 				}
 			} else if (option == 3) {
+				order();
+				int num = Helper.readInt("Which action do you want perform? > ");
+				if (num == 1) {
+					add(orderList, menuItemList);
+				} else if (num == 2) {
+					view(orderList);
+				} else if (num == 3) {
+					deleteOrder(orderList);
+				} else if (num == 4) {
+					searchOrder(orderList);
+				} else if (num == 5) {
+					getAllOrder(orderList, menuItemList);
+				} else if (num == 6) {
+					updateOrder(orderList);
+				}
+
+				else {
+					System.out.println("Invalid option.");
+				}
+
+
 
 			} else if (option == 4) {
 				menu();
@@ -144,6 +165,15 @@ public class C206_CaseStudy {
 		System.out.println("2. View");
 		System.out.println("3. Delete");
 		System.out.println("4. Update");
+		
+	}
+	public static void order() {
+		System.out.println("1. Create");
+		System.out.println("2. View");
+		System.out.println("3. Delete");
+		System.out.println("4. Search");
+		System.out.println("5. Retrieve");
+		System.out.println("6. Update date");
 	}
 
 	public static boolean loginAdmin(ArrayList<Account> AccountList) {
@@ -814,7 +844,189 @@ public class C206_CaseStudy {
 		} else {
 			System.out.println("Payee not found");
 		}
+	}
+		// Order method
+	    // Done by LXC
+	    //Start here
+	    public static String retrieve(ArrayList<Order> orderList) {
+	        String output = "";
+
+	 
+
+	        for (int i = 0; i < orderList.size(); i++) {
+
+	 
+
+	            output += String.format("%-30s %-30s %-30s\n", orderList.get(i).getStudentId(), orderList.get(i).getOrderDate(),
+	                    orderList.get(i).getItems());
+	            
+	    }
+	    return output;
+	}
+	    
+	    public static void view(ArrayList<Order> orderList) {
+	    
+	        String output = String.format("%-30s %-30s %-30s \n","StudentId", "Date of Order", "Order placed" );
+	        output += retrieve(orderList);
+	        System.out.println(output);
+	    }
+	    
+	    public static void add(ArrayList<Order> orderList,ArrayList<MenuItem> menuitemList ) {
+	        String name = Helper.readString("Enter student id> ");
+	        String date = Helper.readString("Enter orderdate > ");
+	        int contactNo = Helper.readInt("Enter quantity > ");
+	        String mealchoice = Helper.readString("Enter the name of the food > "); 
+	        
+	        int added = 0;
+	        for(int i = 0;i<menuitemList.size();i++) {
+	            if(menuitemList.get(i).getName().equalsIgnoreCase(mealchoice)) {
+	                added = 1;
+	            }
+	        }
+	        if(added == 0) {
+	            System.out.println("User account Name already exists!");
+	        }
+	        if (added ==1) {
+	            Order newOrder = new Order(name, date, mealchoice);
+	            orderList.add(newOrder);
+	            System.out.println("User account added");
+	            
+	        }
+	    }
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    // Done by LXC
+
+	 
+
+	    public static void deleteOrder(ArrayList<Order> orderList) {
+
+	 
+
+	        boolean isDeleted = false;
+
+	 
+
+	        String orderDateToDelete = Helper.readString("Please Enter Order Date To Delete Order Placed On That Date: ");
+
+	 
+
+	        for (Order Object : orderList) {
+	            if (Object.getOrderDate().equalsIgnoreCase(orderDateToDelete)) {
+	                orderList.remove(Object);
+	                isDeleted = true;
+	            }
+	        }
+
+	 
+
+	        if (isDeleted == true) {
+	            System.out.println("Order Successfully Deleted!");
+	        }
+
+	 
+
+	        else {
+	            System.out.println("An Error Has Occured, Please Try Again!");
+	        }
+
+	 
+
+	    }
+
+	 
+
+	    public static void searchOrder(ArrayList<Order> orderList) {
+	        C206_CaseStudy.setHeader("Search LIST");
+	        String output = String.format("%-20s %-20s %-20s\n", "STUDENT ID", "ORDER DATE", "ITEM NAME");
+
+	 
+
+	        String ID = Helper.readString("Enter Student ID you wan to Search: ");
+	        for (int i = 0; i < orderList.size(); i++) {
+	            if (orderList.get(i).getStudentId().equals(ID)) {
+	                output += String.format("%-90s\n", orderList.get(i).toString());
+	            } else {
+	                System.out.println("Invalid student ID entered!!");
+	            }
+
+	 
+
+	        }
+	        System.out.println(output);
+
+	 
+
+	    }
+
+	 
+
+	    public static void getAllOrder(ArrayList<Order> orderList, ArrayList<MenuItem> menuItemList) {
+	        C206_CaseStudy.setHeader("Retrive list");
+	        String itemsOrdered = "";
+	        double price = 0;
+	        String a="";
+
+	 
+
+	        System.out.println(
+	                String.format("%-30s %-30s %-30s %-30s", "STUDENT ID", "DATE OF ORDER", "ORDERS PLACED", "PRICE"));
+
+	 
+
+	        for (int i = 0; i < orderList.size(); i++) {
+	            for (int x = 0; x < orderList.size(); x++) {
+	                
+	                itemsOrdered = orderList.get(x).getItems();
+	                a=orderList.get(x).getname();
+	                price = menuItemList.get(x).getPrice();
+	                System.out.println(itemsOrdered);
+	            }
+	            System.out.println(String.format("%-30s %-30s %-30s %-30s %-30.2f", orderList.get(i).getStudentId(),
+	                    orderList.get(i).getOrderDate(), itemsOrdered, a,price));
+	        }
+	    }
+
+	 
+
+	    public static void updateOrder(ArrayList<Order> orderList) {
+	        String id = Helper.readString("Enter Student ID: ");
+
+	 
+
+	        for (int i = 0; i < orderList.size(); i++) {
+	            if (orderList.get(i).getStudentId().equals(id)) {
+	                String newOrderDate = Helper.readString("Enter New Order Date: ");
+	                orderList.get(i).setOrderDate(newOrderDate);
+	                System.out.println("Order Date Updated");
+	            } else {
+	                System.out.println("Student ID Invalid");
+
+	 
+
+	            }
+	        }
+	        
+	    }
+
+	 
+
+	           
+	        
+	    
+			
+		
+		
+		
+		
 
 	}
 
-}
