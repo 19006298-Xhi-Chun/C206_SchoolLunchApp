@@ -19,22 +19,34 @@ public class C206_CaseStudy {
 				menu();
 				int num = Helper.readInt("Which action do you want to perform? > ");
 				Helper.line(80, "-");
-				if (num == 1) {
-					String newName = Helper.readString("Enter new Account username:");
-					String newStudentId = Helper.readString("Enter new Student ID:");
-					String newContactNumber = Helper.readString("Enter your contact number:");
-					String newRole = Helper.readString("Enter user role:");
-					createUserAccount(AccountList, newName, newStudentId, newContactNumber, newRole);
-				}
-				if (num == 2) {
-					viewUserAccount(AccountList);
-				}
-				if (num == 3) {
-					String oldName1 = Helper.readString("Enter name of deleting account :");
-					String oldStudentID1 = Helper.readString("Enter Student ID of deleting Account :");
-					deleteUserAccount(AccountList, oldName1, oldStudentID1);
-				}
-			} 
+				 if (num == 1) {
+	                    String newName = Helper.readString("Enter new Account username:");
+	                    String newStudentId = Helper.readString("Enter new Student ID:");
+	                    String newContactNumber = Helper.readString("Enter your contact number:");
+	                    String newRole = Helper.readString("Enter user role:");
+	                    createUserAccount(AccountList,newName,newStudentId,newContactNumber,newRole);
+	                }
+	                if(num == 2) {
+	                    viewUserAccount(AccountList);
+	                }
+	                if(num == 3) {
+	                    String oldName1 = Helper.readString("Enter name of deleting account :");
+	                    String oldStudentID1 = Helper.readString("Enter Student ID of deleting Account :");
+	                    deleteUserAccount(AccountList,oldName1,oldStudentID1);
+	                }
+	                if(num == 4) {
+	                    System.out.println("1.Edit name");
+	                    System.out.println("2.Edit student ID");
+	                    System.out.println("3.Edit both");
+	                    int user_edit = Helper.readInt("What do you want to edit?");
+	                    String oldName = Helper.readString("Enter old name you want to edit:");
+	                    String oldStudentId = Helper.readString("Enter old StudentID you want to edit:");
+	                    updateUserAccount(AccountList,user_edit,oldName,oldStudentId);
+	                }
+	                if (num == 5) {
+	                    searchUserAccount(AccountList);
+	                }
+	            }
 			else if (option == 2) 
 			{
 				menu();
@@ -149,6 +161,7 @@ public class C206_CaseStudy {
 		System.out.println("2. View");
 		System.out.println("3. Delete");
 		System.out.println("4. Update");
+		System.out.println();
 
 	}
 
@@ -166,36 +179,112 @@ public class C206_CaseStudy {
 
 	// ----------------------------Option 1----------------------------
 	// Done by Aravind
-	public static void createUserAccount(ArrayList<Account> AccountList, String newName, String newStudentId,
-			String newContactNumber, String newRole) {
-		Account newAccount = new Account(newName, newStudentId, newContactNumber, newRole);
-		AccountList.add(newAccount);
-		System.out.println("Account has been successfully added!");
-	}
+	 public static void createUserAccount(ArrayList<Account> AccountList,String newName,String newStudentId,String newContactNumber,String newRole) {        
+	        Account newAccount = new Account(newName,newStudentId,newContactNumber,newRole);
+	        AccountList.add(newAccount);
+	        System.out.println("Account has been successfully added!");
+	    }
+	    public static void viewUserAccount(ArrayList<Account> AccountList) {
+	        String header = String.format("%s %20s %20s %10s","USERNAME","STUDENT ID","CONTACT","ROLE");
+	        System.out.println(header);
+	        Helper.line(80,"-");
+	        for(int i=0;i<AccountList.size();i++) {
+	            String userName = AccountList.get(i).getName();
+	            String stID = AccountList.get(i).getStudentId();
+	            String conNum = AccountList.get(i).getContactNumber();
+	            String rle = AccountList.get(i).getRole();
+	            String format = String.format("%s %20s %20s %20s",userName,stID,conNum,rle);
+	            System.out.println(format);
+	        }
+	    }
+	    public static void deleteUserAccount(ArrayList<Account> AccountList,String oldName1, String oldStudentID1) {
+	        for(int i=0; i < AccountList.size();i++) {
+	            if(AccountList.get(i).getName().equalsIgnoreCase(oldName1) && AccountList.get(i).getStudentId().equalsIgnoreCase(oldStudentID1)) {
+	                AccountList.remove(i);
+	                System.out.println("Account has been successfully deleted!");
+	                break;
+	            }
+	        }
+	    }
+	    public static void updateUserAccount(ArrayList<Account> AccountList,int user_edit,String oldName,String oldStudentID) {
+	        for(int i=0;i<AccountList.size();i++) {
+	            if(AccountList.get(i).getName().equalsIgnoreCase(oldName) && AccountList.get(i).getStudentId().equalsIgnoreCase(oldStudentID)) {
+	                if(user_edit == 1) {
+	                    String modName = Helper.readString("Enter new edited name: ");
+	                    if(sameUserName(AccountList,modName) ==true) {
+	                        System.out.println("Username already exists in the database. Please try again.");
+	                        modName = Helper.readString("Enter new edited name: ");
+	                        AccountList.get(i).setName(modName);
+	                    }
+	                    else {
+	                    AccountList.get(i).setName(modName);
+	                    }
+	                    System.out.println("Name has been modified!");
+	                    break;
+	                }
+	                if(user_edit == 2) {
+	                    String modID = Helper.readString("Enter new edited StudentId: ");
+	                    AccountList.get(i).setStudentId(modID);
+	                    System.out.println("Student ID  has been modified!");
+	                    break;
+	            }
+	                if(user_edit == 3) {
+	                    String modName = Helper.readString("Enter new edited name: ");
+	                    String modID = Helper.readString("Enter new edited StudentId: ");
+	                    if(sameUserName(AccountList,modName) ==true) {
+	                        System.out.println("Username already exists in the database. Please try again.");
+	                        modName = Helper.readString("Enter new edited name: ");
+	                        AccountList.get(i).setName(modName);
+	                    }
+	                    else {
+	                    AccountList.get(i).setName(modName);
+	                    }
+	                    AccountList.get(i).setStudentId(modID);
+	                    System.out.println("Student ID and Name has been modified!");
+	                    break;
+	        
 
-	public static void viewUserAccount(ArrayList<Account> AccountList) {
-		String header = String.format("%s %20s %20s %10s", "USERNAME", "STUDENT ID", "CONTACT", "ROLE");
-		System.out.println(header);
-		Helper.line(80, "-");
-		for (int i = 0; i < AccountList.size(); i++) {
-			String userName = AccountList.get(i).getName();
-			String stID = AccountList.get(i).getStudentId();
-			String conNum = AccountList.get(i).getContactNumber();
-			String rle = AccountList.get(i).getRole();
-			String format = String.format("%s %20s %20s %20s", userName, stID, conNum, rle);
-			System.out.println(format);
-		}
-	}
+	 
 
-	public static void deleteUserAccount(ArrayList<Account> AccountList, String oldName1, String oldStudentID1) {
-		for (int i = 0; i < AccountList.size(); i++) {
-			if (AccountList.get(i).getName().equalsIgnoreCase(oldName1)
-					&& AccountList.get(i).getStudentId().equalsIgnoreCase(oldStudentID1)) {
-				AccountList.remove(i);
-				System.out.println("Account has been successfully deleted!");
-				break;
-			}
-		}
+	    }
+	            }
+	        }
+
+	 
+
+	    
+	}
+	    public static boolean sameUserName(ArrayList<Account>AccountList,String checkName) {
+	        String testName = "";
+	        for(int i=0;i<AccountList.size();i++) {
+	            if(AccountList.get(i).getName().equalsIgnoreCase(checkName)) {
+	                testName =  AccountList.get(i).getName();
+	            }
+	        }
+	        if(testName.equalsIgnoreCase(checkName)) {
+	            return true;
+	        }
+	        else {
+	            return false;
+	        }
+	    }
+	    public static void searchUserAccount(ArrayList<Account>AccountList) {
+	        String searchID = Helper.readString("Enter Student ID:");
+	        String header = String.format("%s %20s %20s %10s","USERNAME","STUDENT ID","CONTACT","ROLE");
+	        System.out.println(header);
+	        Helper.line(80,"-");
+	        for(int i=0;i<AccountList.size();i++) {
+	            if(AccountList.get(i).getStudentId().equalsIgnoreCase(searchID)) {
+	                String userName = AccountList.get(i).getName();
+	                String stID = AccountList.get(i).getStudentId();
+	                String conNum = AccountList.get(i).getContactNumber();
+	                String rle = AccountList.get(i).getRole();
+	                String format = String.format("%s %20s %20s %20s",userName,stID,conNum,rle);
+	                System.out.println(format);
+	                break;
+	            }
+	            
+	        }
 	}
 
 	// ----------------------------Option 2----------------------------
