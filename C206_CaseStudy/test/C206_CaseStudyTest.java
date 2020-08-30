@@ -144,6 +144,7 @@ public class C206_CaseStudyTest {
 	}
 
 	// monthly menu
+	// done by Pei Wen
 		@Test
 		public void testCreateMenu() {
 			// check the menu is created. -normal
@@ -160,11 +161,6 @@ public class C206_CaseStudyTest {
 			int month = monthlyMenu.get(0).getMonth();
 			assertTrue(month >= 1 && month <= 12);
 
-			// Test that can randomly select items -boundary
-			C206_CaseStudy.inputCreateMenu(monthlyMenu);
-			int numberOfItems = monthlyMenu.get(0).getNumberOfItems();
-			int size = menuItemList.size();
-			assertTrue(numberOfItems<=size && numberOfItems>=0);
 		}
 
 		@Test
@@ -175,37 +171,15 @@ public class C206_CaseStudyTest {
 
 			// test the monthly menu are correct - normal
 
-			C206_CaseStudy.createMenu(monthlyMenu, mm2);
 			String allMonthlyMenu = C206_CaseStudy.retrieveAllMonthlyMenu(monthlyMenu);
-
+			
 			output += String.format("%-20s %-10s %-15s %-15s %-10s %-10b %-10.2f\n", "July Menu", "7", "1", "Western", "Fries",
 					false, 3.0);
+			
 			output += String.format("%-20s %-10s %-15s %-15s %-10s %-10b %-10.2f\n", "August Menu", "8", "2", "Vegetarian",
 					"Cabbage", true, 1.5);
 
 			assertEquals("Test that ViewAllMenuItem works", output, allMonthlyMenu);
-		}
-
-
-		@Test
-
-		public void testUpdateMenu() {
-			// Create a menu and test
-			C206_CaseStudy.createMenu(monthlyMenu, mm1);
-			assertSame("Check that menu is existing", mm1, monthlyMenu.get(0));
-
-			// Test that display name has been updated
-			C206_CaseStudy.updateMenu(monthlyMenu);
-			assertEquals("Check that display name has been updated", monthlyMenu.get(0).getDisplayName(), "August Menu");
-
-			// Test that the month is valid -boundary
-			C206_CaseStudy.updateMenu(monthlyMenu);
-			int month = monthlyMenu.get(0).getMonth();
-			assertTrue(month >= 1 && month <= 12);
-
-			// Test that month has been updated
-			C206_CaseStudy.updateMenu(monthlyMenu);
-			assertEquals("Check that month has been updated", monthlyMenu.get(0).getMonth(), 8);
 		}
 
 		@Test
@@ -228,6 +202,29 @@ public class C206_CaseStudyTest {
 			canDelete = C206_CaseStudy.deleteMenu(monthlyMenu, mmTest);
 			canDelete = false;
 			assertFalse("Test if an item cannot be deleted", canDelete);
+		}
+		@Test
+		public void testUpdateMenu() {
+			boolean canUpdate = false;
+			
+			// test if menu can be updated -normal
+			C206_CaseStudy.createMenu(monthlyMenu, mm1);
+			Menu mmTest = new Menu("July Menu", 7, 1, menuItemList);
+			canUpdate = C206_CaseStudy.updateMonthlyMenu(monthlyMenu,"August Menu",mmTest);
+			assertTrue("Test if an existing menu can be updated", canUpdate);
+
+			// Test that display name has been updated
+			C206_CaseStudy.updateMenu(monthlyMenu);
+			assertEquals("Check that display name has been updated", monthlyMenu.get(0).getDisplayName(), "August Menu");
+
+			// Test that the month is valid -boundary
+			C206_CaseStudy.updateMenu(monthlyMenu);
+			int month = monthlyMenu.get(0).getMonth();
+			assertTrue(month >= 1 && month <= 12);
+
+			// Test that month has been updated
+			C206_CaseStudy.updateMenu(monthlyMenu);
+			assertEquals("Check that month has been updated", monthlyMenu.get(0).getMonth(), 8);
 		}
 
 
